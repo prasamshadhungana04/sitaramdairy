@@ -3,21 +3,24 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global Base Styles - Strict Light Theme */
 body {
-  background-color: #FDFBF7; /* The exact 'milk' color from your tailwind.config.js */
-  color: #1F2937;            /* The 'textMain' color */
+  background-color: #F9F6F0; /* cream */
+  color: #1C251D;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Custom utility to hide scrollbars on the horizontal FeaturedCarousel */
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;             /* Chrome, Safari and Opera */
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom rustic button style */
+@layer components {
+  .btn-premium {
+    @apply bg-farmGreen text-white font-bold py-3 px-8 rounded-full border-2 border-farmGreen hover:bg-white hover:text-farmGreen transition-all duration-300 shadow-lg;
+  }
 }

@@ -8,15 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        milk: "#FDFBF7",
-        cream: "#FEF7E5",
-        dairyBlue: "#E3F2FD",
-        freshGreen: "#E8F5E9",
-        textMain: "#1F2937",
+        milk: "#FFFFFF",
+        creamBg: "#F9F6F0",      /* Textured paper-like background */
+        dairyNavy: "#002147",    /* Deep premium navy blue */
+        dairyGold: "#E2B254",    /* The specific golden yellow from your images */
+        textMuted: "#6B7280"
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-      }
+        sans: ['"DM Sans"', 'sans-serif'],
+        serif: ['Fraunces', 'serif'],
+      },
     },
   },
   plugins: [],
