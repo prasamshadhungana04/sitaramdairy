@@ -102,5 +102,4 @@ const HeroSlider = () => {
   );
 };
 
-// Only ONE export default - remove any duplicates
 export default HeroSlider;

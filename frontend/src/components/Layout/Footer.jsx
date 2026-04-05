@@ -1,38 +1,64 @@
 // frontend/src/components/Layout/Footer.jsx
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-export default function Footer() {
+const Footer = () => {
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-red-900 text-white pt-16 pb-8" id="footer">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* About Us Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
-            <span className="text-2xl font-bold text-textMain">Sita Ram <span className="text-green-600">Dairy</span></span>
-            <p className="mt-4 text-sm text-gray-600">Pure, farm-fresh dairy products.</p>
+            <h3 className="text-2xl font-fraunces font-bold mb-4">About Sita Ram Dairy</h3>
+            <div className="w-12 h-0.5 bg-red-400 mb-4" />
+            <p className="text-gray-300 leading-relaxed">
+              Established in 1985, Sita Ram Dairy has been providing pure, organic dairy products 
+              to families across Nepal. We believe in traditional farming methods and animal welfare.
+            </p>
           </div>
+
           <div>
-            <h3 className="font-bold text-textMain mb-4">Shop</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link to="/products" className="hover:text-green-600">All Products</Link></li>
-              <li><Link to="/products?category=Milk" className="hover:text-green-600">Fresh Milk</Link></li>
+            <h4 className="text-xl font-fraunces font-semibold mb-4">Our Mission</h4>
+            <div className="w-12 h-0.5 bg-red-400 mb-4" />
+            <p className="text-gray-300 leading-relaxed">
+              To deliver farm-fresh, chemical-free dairy products while supporting local farmers 
+              and maintaining sustainable practices.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-xl font-fraunces font-semibold mb-4">Contact Info</h4>
+            <div className="w-12 h-0.5 bg-red-400 mb-4" />
+            <ul className="space-y-2 text-gray-300">
+              <li>📍 Kathmandu, Nepal</li>
+              <li>📞 +977 1 1234567</li>
+              <li>✉️ info@sitaramdairy.com</li>
+              <li>⏰ Mon-Sun: 7AM - 9PM</li>
             </ul>
           </div>
+
           <div>
-            <h3 className="font-bold text-textMain mb-4">Support</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link to="/faq" className="hover:text-green-600">FAQ</Link></li>
-              <li><Link to="/contact" className="hover:text-green-600">Contact Us</Link></li>
-            </ul>
+            <h4 className="text-xl font-fraunces font-semibold mb-4">Follow Us</h4>
+            <div className="w-12 h-0.5 bg-red-400 mb-4" />
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 bg-red-800 rounded-full flex items-center justify-center hover:bg-red-700 transition">
+                📘
+              </a>
+              <a href="#" className="w-10 h-10 bg-red-800 rounded-full flex items-center justify-center hover:bg-red-700 transition">
+                📸
+              </a>
+              <a href="#" className="w-10 h-10 bg-red-800 rounded-full flex items-center justify-center hover:bg-red-700 transition">
+                ▶️
+              </a>
+            </div>
           </div>
-          <div>
-            <h3 className="font-bold text-textMain mb-4">Contact</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li>📍 Tokha, Bagmati, Nepal</li>
-              <li>📞 +977 9800000000</li>
-            </ul>
-          </div>
+        </div>
+
+        <div className="border-t border-red-800 pt-6 text-center text-gray-400">
+          <p>&copy; 2024 Sita Ram Dairy. All rights reserved.</p>
         </div>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

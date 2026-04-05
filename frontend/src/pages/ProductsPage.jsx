@@ -1,46 +1,20 @@
 // frontend/src/pages/ProductsPage.jsx
-import { useState } from 'react';
-import FilterSidebar from '../components/Products/FilterSidebar';
-import ProductGrid from '../components/Home/ProductGrid';
+import OurCollection from '../components/Home/OurCollection';
+import DetailedProductCards from '../components/Home/DetailedProductCards';
+import ProductImageShowcase from '../components/Home/ProductImageShowcase';
 
-const mockProducts = [
-  { id: 1, name: "Full Cream Milk", category: "Milk", price_npr: 120, image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400" },
-  { id: 2, name: "Fresh Paneer", category: "Cheese", price_npr: 350, image: "https://images.unsplash.com/photo-1631379578027-114414f52e37?w=400" },
-  { id: 3, name: "Pure Cow Ghee", category: "Ghee", price_npr: 1200, image: "https://images.unsplash.com/photo-1601314101416-3687edec84b3?w=400" },
-  { id: 4, name: "Buffalo Yogurt", category: "Yogurt", price_npr: 150, image: "https://images.unsplash.com/photo-1574221199321-419163f9ebba?w=400" },
-];
-
-export default function ProductsPage() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const categories = ['All', 'Milk', 'Cheese', 'Ghee', 'Yogurt'];
-
-  const filteredProducts = activeCategory === 'All' 
-    ? mockProducts 
-    : mockProducts.filter(p => p.category === activeCategory);
-
+const ProductsPage = () => {
   return (
-    <div className="w-full">
-      {/* Premium Shop Banner */}
-      <div className="bg-farmGreen py-20 px-4 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        <h1 className="text-5xl font-serif font-bold text-white relative z-10 mb-4">Our Products</h1>
-        <p className="text-lightGreen relative z-10 max-w-xl mx-auto font-medium">
-          Explore our range of 100% organic, locally sourced dairy products. Delivered fresh from our farm to your table.
-        </p>
+    <main>
+      <div className="bg-red-600 text-white py-16 text-center">
+        <h1 className="text-4xl font-fraunces font-bold">Our Products</h1>
+        <p className="mt-2 text-red-100">Pure, fresh, and organic dairy products</p>
       </div>
-
-      <div className="max-w-7xl mx-auto px-4 py-16 flex flex-col md:flex-row gap-12">
-        <div className="w-full md:w-64 flex-shrink-0">
-          <FilterSidebar activeCategory={activeCategory} setActiveCategory={setActiveCategory} categories={categories} />
-        </div>
-        <div className="flex-grow">
-          <div className="mb-8 flex justify-between items-end border-b border-cream pb-4">
-            <h2 className="text-3xl font-serif font-bold text-textMain">{activeCategory}</h2>
-            <span className="text-sm font-bold text-textMuted uppercase tracking-wider">{filteredProducts.length} Items</span>
-          </div>
-          <ProductGrid products={filteredProducts} />
-        </div>
-      </div>
-    </div>
+      <ProductImageShowcase />
+      <OurCollection />
+      <DetailedProductCards />
+    </main>
   );
-}
+};
+
+export default ProductsPage;

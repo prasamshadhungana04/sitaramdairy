@@ -1,41 +1,34 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+// frontend/tailwind.config.js
+module.exports = {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        milk: "#FFFFFF",
-        creamBg: "#F9F6F0",       /* Soft cream background */
-        farmGreen: "#2E5C31",     /* Classic farm green */
-        dairyNavy: "#002147",     /* Deep premium navy */
-        dairyGold: "#E2B254",     /* Golden accent */
-        lightGreen: "#E8F0E9",    /* Subtle green highlight */
-        accentYellow: "#EAB308",  /* Highlight / badges / stars */
-        textMain: "#1C251D",      /* Main text color */
-        textMuted: "#6B7280",     /* Secondary text */
+        creamBg: "#FFFFFF",  // Changed to white
+        dairyRed: "#DC2626",  // New red color
+        dairyDarkRed: "#B91C1C",  // Darker red for hover
+        dairyLightRed: "#FEE2E2",  // Light red background
+        dairyNavy: "#DC2626",  // Replaced navy with red
+        dairyGold: "#FFFFFF",  // Replaced gold with white
       },
       fontFamily: {
-        sans: ['"DM Sans"', 'sans-serif'],
-        serif: ['Fraunces', 'serif'],
+        fraunces: ["Fraunces", "serif"],
+        dmsans: ["DM Sans", "sans-serif"],
+      },
+      boxShadow: {
+        'premium': '0 20px 35px -10px rgba(220, 38, 38, 0.15)',
+        'red': '0 10px 25px -5px rgba(220, 38, 38, 0.2)',
       },
       animation: {
-        'slow-zoom': 'slowZoom 20s ease-in-out infinite alternate',
-        'float': 'float 6s ease-in-out infinite',
+        'slow-zoom': 'slowZoom 20s ease-out infinite',
       },
       keyframes: {
         slowZoom: {
           '0%': { transform: 'scale(1)' },
           '100%': { transform: 'scale(1.1)' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
         }
       }
     },
   },
   plugins: [],
-}
+};
