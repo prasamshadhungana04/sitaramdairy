@@ -1,15 +1,16 @@
-/* frontend/src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Base body styles */
 body {
-  background-color: #F9F6F0; /* cream */
-  color: #1C251D;
+  background-color: theme('colors.creamBg');
+  color: theme('colors.textMain');
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Hide scrollbar helper */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -18,9 +19,23 @@ body {
   scrollbar-width: none;
 }
 
-/* Custom rustic button style */
+/* Custom components */
 @layer components {
+  /* Premium rustic button */
   .btn-premium {
-    @apply bg-farmGreen text-white font-bold py-3 px-8 rounded-full border-2 border-farmGreen hover:bg-white hover:text-farmGreen transition-all duration-300 shadow-lg;
+    @apply bg-farmGreen text-white font-bold py-3 px-8 rounded-full border-2 border-farmGreen transition-all duration-300 shadow-lg;
+  }
+
+  .btn-premium:hover {
+    @apply bg-white text-farmGreen;
+  }
+
+  /* Example: secondary button */
+  .btn-secondary {
+    @apply bg-dairyGold text-white font-semibold py-2 px-6 rounded-lg border-2 border-dairyGold transition-all duration-200;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-white text-dairyGold;
   }
 }
