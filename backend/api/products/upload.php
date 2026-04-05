@@ -4,29 +4,33 @@ require_once "../../config/database.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
-    $price = $_POST['price_npr'];
     $category = $_POST['category'];
+    $price = $_POST['price_npr'];
+    $stock = $_POST['stock_quantity'];
+    $description = $_POST['description'];
     
-    // Handle File
+    $imagePath = "";
+
+    // Handle Image Upload
     if (isset($_FILES['image'])) {
-        $target_dir = "../../uploads/products/";
-        if (!file_exists($target_dir)) mkdir($target_dir, 0777, true);
+        $targetDir = "../../uploads/";
+        $fileName = time() . "_" . basename($_FILES["image"]["name"]);
+        $targetFilePath = $targetDir . $fileName;
         
-        $file_name = time() . "_" . basename($_FILES["image"]["name"]);
-        $target_file = $target_dir . $file_name;
-        
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            // Success! Save path to DB
-            $image_url = "http://localhost/backend/uploads/products/" . $file_name;
-            
-            $sql = "INSERT INTO products (name, price_npr, category, image_url) VALUES (?, ?, ?, ?)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$name, $price, $category, $image_url]);
-            
-            echo json_encode(["message" => "Product uploaded successfully", "url" => $image_url]);
-        } else {
-            echo json_encode(["message" => "Failed to upload image"]);
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // This URL is what the frontend will use to display the image
+            $imagePath = "/backend/uploads/" . $fileName;
         }
+    }
+
+    try {
+        $stmt = $pdo->prepare("INSERT INTO products (name, category, price_npr, stock_quantity, description, image_url) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $category, $price, $stock, $description, $imagePath]);
+        
+        echo json_encode(["success" => true, "message" => "Product added successfully"]);
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(["error" => $e->getMessage()]);
     }
 }
 ?>
