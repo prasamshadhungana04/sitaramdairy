@@ -1,0 +1,23 @@
+/* frontend/src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Base Styles - Strict Light Theme */
+body {
+  background-color: #FDFBF7; /* The exact 'milk' color from your tailwind.config.js */
+  color: #1F2937;            /* The 'textMain' color */
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom utility to hide scrollbars on the horizontal FeaturedCarousel */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari and Opera */
+}
