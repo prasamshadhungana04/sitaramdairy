@@ -1,5 +1,6 @@
 // frontend/src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
+import { loginUser as apiLoginUser, logoutUser as apiLogoutUser } from '../services/auth';
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -9,38 +10,47 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate checking for session
     const savedUser = localStorage.getItem('sitaRamUser');
-    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
-    // Simulated API call - Replace with actual auth.js service
-    if (email === 'admin@sitaram.com' && password === 'password123') {
-      const mockAdmin = { id: 1, name: 'Admin User', email, role: 'admin' };
-      setUser(mockAdmin);
-      localStorage.setItem('sitaRamUser', JSON.stringify(mockAdmin));
-      return { success: true };
+    try {
+      const data = await apiLoginUser({ email, password });
+      
+      if (data.user) {
+        setUser(data.user);
+        localStorage.setItem('sitaRamUser', JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('sitaRamToken', data.token);
+        return { success: true, role: data.user.role };
+      }
+      return { success: false, error: 'Invalid response from server' };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error.response?.data?.error || 'Login failed. Please check your credentials.' 
+      };
     }
-    if (email === 'customer@test.com' && password === 'password123') {
-      const mockCustomer = { id: 2, name: 'Customer User', email, role: 'customer' };
-      setUser(mockCustomer);
-      localStorage.setItem('sitaRamUser', JSON.stringify(mockCustomer));
-      return { success: true };
-    }
-    return { success: false, error: 'Invalid credentials' };
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('sitaRamUser');
-    localStorage.removeItem('sitaRamToken');
+  const logout = async () => {
+    try {
+      await apiLogoutUser();
+    } catch (e) {
+      console.error("Logout API failed, clearing local state anyway");
+    } finally {
+      setUser(null);
+      localStorage.removeItem('sitaRamUser');
+      localStorage.removeItem('sitaRamToken');
+    }
   };
 
   return (
     <AuthContext.Provider value={{ user, login, logout, loading, isAuthenticated: !!user }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

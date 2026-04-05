@@ -1,3 +1,4 @@
+/* frontend/src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,184 +9,41 @@
   }
   
   body {
-    @apply bg-white font-dmsans text-red-800;
+    /* Global Premium Defaults */
+    @apply bg-[#F9F6F0] font-sans text-[#002147];
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-fraunces;
-  }
-}
-
-@layer components {
-  /* Premium button */
-  .btn-premium {
-    @apply bg-red-600 text-white font-bold py-3 px-8 rounded-full border-2 border-red-600 transition-all duration-300 hover:bg-red-700 hover:border-red-700 hover:scale-105;
-  }
-  
-  /* Outline button */
-  .btn-outline-red {
-    @apply bg-transparent text-red-600 font-semibold py-2 px-6 rounded-full border-2 border-red-600 transition-all duration-300 hover:bg-red-600 hover:text-white hover:scale-105;
-  }
-  
-  /* Primary button */
-  .btn-primary {
-    @apply bg-red-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 hover:bg-red-700 hover:scale-105 shadow-md;
-  }
-  
-  /* Secondary button */
-  .btn-secondary {
-    @apply bg-white text-red-600 font-semibold py-3 px-6 rounded-full border-2 border-red-600 transition-all duration-300 hover:bg-red-600 hover:text-white hover:scale-105;
-  }
-  
-  /* Product card */
-  .card-product {
-    @apply bg-white rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
-  }
-  
-  /* Section title */
-  .section-title {
-    @apply text-4xl md:text-5xl font-fraunces font-bold text-red-800 text-center mb-4;
-  }
-  
-  /* Section subtitle */
-  .section-subtitle {
-    @apply text-red-600 text-sm uppercase tracking-wider font-dmsans text-center mb-3;
-  }
-  
-  /* Red divider */
-  .red-divider {
-    @apply w-24 h-0.5 bg-red-500 mx-auto my-4;
-  }
-  
-  /* Input fields */
-  .input-premium {
-    @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all duration-300 bg-white;
-  }
-  
-  /* Badge */
-  .badge-red {
-    @apply bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold font-dmsans shadow-md;
-  }
-  
-  /* Hero overlay */
-  .hero-overlay {
-    @apply absolute inset-0 bg-gradient-to-r from-red-900/60 to-transparent;
-  }
-  
-  /* Container */
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply font-serif tracking-tight;
   }
 }
 
 @layer utilities {
-  /* Red text gradient */
-  .text-gradient-red {
-    @apply bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent;
+  /* Custom High-End Scrollbar for Webkit */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #F9F6F0;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #002147;
+    border-radius: 10px;
   }
   
-  /* Slow zoom animation */
+  /* Text Stroke for Floating Typography */
+  .outline-text {
+    -webkit-text-stroke: 1px #002147;
+    color: transparent;
+  }
+
+  /* Cinematic Slow Zoom */
   .animate-slow-zoom {
-    animation: slowZoom 20s ease-out infinite;
+    animation: slowZoom 20s ease-out infinite alternate;
   }
   
   @keyframes slowZoom {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1.1);
-    }
-  }
-  
-  /* Red shadow */
-  .shadow-red {
-    box-shadow: 0 20px 35px -10px rgba(220, 38, 38, 0.15);
-  }
-  
-  /* Fade in animation */
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-in;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  /* Smooth hover transitions for all interactive elements */
-  .hover-lift {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .hover-lift:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 25px -12px rgba(220, 38, 38, 0.2);
-  }
-  
-  /* Product card hover effects */
-  .product-card {
-    transition: all 0.3s ease-out;
-  }
-  
-  .product-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 25px 35px -12px rgba(220, 38, 38, 0.25);
-  }
-  
-  .product-card:hover .product-image {
-    transform: scale(1.1);
-  }
-  
-  .product-image {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  /* Service card hover */
-  .service-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .service-card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 25px 35px -12px rgba(220, 38, 38, 0.3);
-  }
-  
-  /* Icon hover animation */
-  .hover-icon {
-    transition: transform 0.3s ease-out;
-  }
-  
-  .service-card:hover .hover-icon {
-    transform: scale(1.2) rotate(5deg);
-  }
-  
-  /* Slide up animation */
-  .animate-slide-up {
-    animation: slideUp 0.5s ease-out;
-  }
-  
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Scale on hover */
-  .hover-scale {
-    transition: transform 0.3s ease;
-  }
-  
-  .hover-scale:hover {
-    transform: scale(1.05);
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
   }
 }

@@ -7,9 +7,9 @@ import DetailedProductCards from '../components/Home/DetailedProductCards';
 import FloatingTypography from '../components/Home/FloatingTypography';
 import FeaturedCarousel from '../components/Home/FeaturedCarousel';
 
-const HomePage = () => {
+export default function HomePage() {
   return (
-    <main className="overflow-hidden">
+    <main className="overflow-hidden bg-[#F9F6F0]">
       <HeroSlider />
       <HeroProductGrid />
       <ProductImageShowcase />
@@ -19,6 +19,4 @@ const HomePage = () => {
       <FeaturedCarousel />
     </main>
   );
-};
-
-export default HomePage;
+}

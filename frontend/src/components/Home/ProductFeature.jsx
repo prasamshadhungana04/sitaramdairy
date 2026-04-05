@@ -1,72 +1,80 @@
 // frontend/src/components/Home/ProductFeature.jsx
 import { motion } from 'framer-motion';
+import { Leaf, Baby, ShieldCheck, Droplets } from 'lucide-react';
 
 export default function ProductFeature() {
   const fatContents = ["0.5%", "1.5%", "2.5%", "3.5%", "6%"];
 
   return (
-    <div className="bg-creamBg py-24 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+    <div className="bg-[#F9F6F0] py-24 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
         
         {/* Left Column */}
-        <div className="space-y-10">
+        <div className="space-y-10 relative z-10">
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-            <h2 className="text-4xl font-serif font-bold text-dairyNavy mb-6 leading-tight">
-              Our products <span className="text-dairyGold">are based on high quality milk</span>
+            <h2 className="text-4xl font-serif font-bold text-[#002147] mb-6 leading-tight">
+              Our products <span className="text-[#E2B254]">are based on high quality milk</span>
             </h2>
-            <p className="text-sm text-textMuted leading-relaxed mb-8 font-medium">
-              We ensure the highest standards in dairy processing. Our milk is sourced directly from happy, healthy cattle, preserving all natural vitamins and minerals.
+            <p className="text-sm text-gray-600 leading-relaxed mb-8 font-medium">
+              We ensure the highest standards in dairy processing. Our milk is sourced directly from happy, healthy cattle in Tokha, preserving all natural vitamins and minerals.
             </p>
             
             {/* Fat Content Circles */}
-            <div className="flex gap-4 mb-10">
+            <div className="flex flex-wrap gap-4 mb-10">
               {fatContents.map((fat, i) => (
-                <div key={i} className="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center font-bold text-dairyNavy text-sm border border-gray-100">
+                <div key={i} className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center font-bold text-[#002147] text-sm border-2 border-transparent hover:border-[#E2B254] transition-colors cursor-pointer">
                   {fat}
                 </div>
               ))}
             </div>
 
-            <div className="bg-white/50 p-6 rounded-2xl">
-              <h3 className="text-xl font-bold text-dairyNavy flex items-center gap-2 mb-3">
-                <span className="text-2xl">🍃</span> Environmentally <span className="text-dairyGold">friendly</span>
+            <div className="bg-white/80 backdrop-blur p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,33,71,0.05)] border border-white">
+              <h3 className="text-xl font-bold text-[#002147] flex items-center gap-3 mb-3">
+                <Leaf className="text-green-500" size={24} /> Environmentally <span className="text-[#E2B254]">Friendly</span>
               </h3>
-              <p className="text-sm text-textMuted mb-6">Sustainable farming practices that protect our soil, water, and local ecosystem.</p>
-              <button className="bg-dairyGold text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-dairyNavy transition-colors duration-300">
-                Read more
+              <p className="text-sm text-gray-500 mb-6">Sustainable farming practices that protect our soil, water, and local Nepalese ecosystem.</p>
+              <button className="bg-[#002147] text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-[#E2B254] hover:text-[#002147] transition-all duration-300">
+                Read our story
               </button>
             </div>
           </motion.div>
         </div>
 
-        {/* Center Column: The Bottle (Image 2) */}
+        {/* Center Column: The 3D Bottle Showcase */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }} 
           whileInView={{ opacity: 1, scale: 1 }} 
           viewport={{ once: true }}
-          className="relative flex justify-center items-center h-[600px]"
+          className="relative flex justify-center items-center h-[500px] lg:h-[600px] z-20"
         >
-          {/* Mock Leaves Behind */}
-          <motion.div 
-            animate={{ rotate: [0, 5, -5, 0] }} 
-            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            className="absolute z-0 text-9xl text-green-700/20"
-          >
-            🌿
-          </motion.div>
-          {/* The Bottle (Using a generic transparent milk bottle URL) */}
+          {/* Animated Glow Behind Bottle */}
+          <div className="absolute inset-0 bg-[#E2B254]/20 rounded-full blur-[100px] animate-pulse"></div>
+          
+          {/* 3D Realistic Bottle Mockup */}
           <img 
             src="https://png.pngtree.com/png-clipart/20230805/original/pngtree-milk-bottle-mockup-drink-food-picture-image_7758364.png" 
             alt="Organic Fresh Milk" 
-            className="relative z-10 max-h-full object-contain drop-shadow-2xl"
+            className="relative z-10 h-full object-contain drop-shadow-[0_30px_30px_rgba(0,33,71,0.3)] hover:scale-105 transition-transform duration-500"
           />
         </motion.div>
 
         {/* Right Column */}
-        <div className="space-y-12">
-          <FeatureBlock icon="🌾" title="100% Organic Products" desc="Sourced from farms free of synthetic pesticides and fertilizers." />
-          <FeatureBlock icon="🍼" title="Recommended for babies" desc="Rich in calcium and essential proteins required for early development." />
-          <FeatureBlock icon="🐄" title="High Quality Raw Milk" desc="Processed minimally to retain the authentic, natural farm taste." />
+        <div className="space-y-8 relative z-10">
+          <FeatureBlock 
+            icon={<ShieldCheck className="text-[#002147]" size={28} />} 
+            title="100% Organic Products" 
+            desc="Sourced from local farms entirely free of synthetic pesticides and artificial fertilizers." 
+          />
+          <FeatureBlock 
+            icon={<Baby className="text-[#002147]" size={28} />} 
+            title="Recommended for Babies" 
+            desc="Rich in natural calcium and essential A2 proteins required for early development." 
+          />
+          <FeatureBlock 
+            icon={<Droplets className="text-[#002147]" size={28} />} 
+            title="High Quality Raw Milk" 
+            desc="Processed minimally and pasteurized perfectly to retain the authentic farm taste." 
+          />
         </div>
 
       </div>
@@ -76,13 +84,13 @@ export default function ProductFeature() {
 
 function FeatureBlock({ icon, title, desc }) {
   return (
-    <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex gap-6">
-      <div className="w-16 h-16 shrink-0 rounded-full bg-white shadow-md flex items-center justify-center text-3xl border border-dairyGold/30">
+    <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex gap-6 group bg-white/50 hover:bg-white p-4 rounded-2xl transition-colors">
+      <div className="w-16 h-16 shrink-0 rounded-full bg-white shadow-md flex items-center justify-center border border-[#E2B254]/30 group-hover:border-[#E2B254] transition-colors">
         {icon}
       </div>
       <div>
-        <h3 className="text-xl font-bold text-dairyNavy mb-2">{title}</h3>
-        <p className="text-sm text-textMuted leading-relaxed">{desc}</p>
+        <h3 className="text-lg font-bold text-[#002147] mb-2">{title}</h3>
+        <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
       </div>
     </motion.div>
   );

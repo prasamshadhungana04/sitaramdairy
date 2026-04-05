@@ -2,25 +2,23 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // Point to the PHP API directory
-  baseURL: 'http://localhost/backend/api',
+  // Using the Vite Proxy setup to route directly to XAMPP without CORS issues
+  baseURL: '/api',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
-  // Essential for cross-origin requests with sessions/cookies
   withCredentials: true,
 });
 
-// Request interceptor: Attach JWT or Auth token if you decide to use one later
+// Request interceptor: Attach Auth token and handle FormData dynamically
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('sitaRamToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   
-  // Logic for PHP: If the request is a FormData (like product uploads), 
-  // let the browser set the Content-Type automatically.
+  // Logic for Pure PHP: If uploading an image, let browser set multipart/form-data
   if (config.data instanceof FormData) {
     delete config.headers['Content-Type'];
   }
@@ -35,8 +33,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Logic for session expiration or unauthorized access
-      console.warn("Unauthorized access. Redirecting to login...");
+      console.warn("Session expired. Redirecting to login...");
+      localStorage.removeItem('sitaRamUser');
+      localStorage.removeItem('sitaRamToken');
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

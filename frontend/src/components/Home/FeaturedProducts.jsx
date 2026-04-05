@@ -1,162 +1,99 @@
 // frontend/src/components/Home/FeaturedProducts.jsx
 import { motion } from 'framer-motion';
+import { ShoppingCart } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
 
 const FeaturedProducts = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Farm Fresh Milk",
-      category: "Milk",
-      price: "₹60/L",
-      oldPrice: "₹75/L",
-      image: "/images/products/milk.jpg",
-      badge: "Best Seller",
-    },
-    {
-      id: 2,
-      name: "Bilona Ghee",
-      category: "Ghee",
-      price: "₹450/500ml",
-      oldPrice: "₹550/500ml",
-      image: "/images/products/ghee.jpg",
-      badge: "Pure A2",
-    },
-    {
-      id: 3,
-      name: "Thick Curd",
-      category: "Curd",
-      price: "₹45/500g",
-      oldPrice: "₹60/500g",
-      image: "/images/products/curd.jpg",
-      badge: "Probiotic",
-    },
-    {
-      id: 4,
-      name: "Paneer Cubes",
-      category: "Paneer",
-      price: "₹200/500g",
-      oldPrice: "₹250/500g",
-      image: "/images/products/paneer.jpg",
-      badge: "Fresh",
-    },
-    {
-      id: 5,
-      name: "Flavored Lassi",
-      category: "Beverages",
-      price: "₹35/200ml",
-      oldPrice: "₹50/200ml",
-      image: "/images/products/lassi.jpg",
-      badge: "Mango",
-    },
-    {
-      id: 6,
-      name: "Desi Butter",
-      category: "Butter",
-      price: "₹120/200g",
-      oldPrice: "₹150/200g",
-      image: "/images/products/butter.jpg",
-      badge: "Salted",
-    }
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
+  const { addToCart } = useCart();
+  
+  // Exactly 13 premium products
+  const products = Array.from({ length: 13 }, (_, i) => ({
+    id: i + 1,
+    name: i % 2 === 0 ? "Premium A2 Milk" : "Organic Cow Ghee",
+    category: i % 2 === 0 ? "Milk" : "Ghee",
+    price: i % 2 === 0 ? 130 : 1200,
+    oldPrice: i % 2 === 0 ? 150 : 1400,
+    // Using high-quality transparent PNGs or clean backgrounds for a 3D effect
+    image: i % 2 === 0 
+      ? "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80" 
+      : "https://images.unsplash.com/photo-1601314101416-3687edec84b3?w=400&q=80",
+    badge: i === 0 ? "Top Seller" : i === 2 ? "New" : null
+  }));
 
   return (
-    <section className="py-20 bg-creamBg">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-dairyGold text-sm uppercase tracking-wider font-dmsans mb-3">
-            Premium Dairy Selection
-          </h2>
-          <h3 className="text-4xl md:text-5xl font-fraunces font-bold text-dairyNavy">
-            Our Farm-Fresh <span className="text-dairyGold">Collection</span>
-          </h3>
-          <div className="w-24 h-0.5 bg-dairyGold mx-auto mt-4" />
+    <section className="py-20 bg-[#F9F6F0] relative">
+      {/* Background Flowing Milk Effect */}
+      <div className="absolute inset-0 opacity-40 pointer-events-none overflow-hidden">
+         <motion.div 
+           animate={{ y: [0, -30, 0], scale: [1, 1.05, 1] }} 
+           transition={{ duration: 10, repeat: Infinity }}
+           className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-white rounded-full blur-[100px]" 
+         />
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <h2 className="text-[#E2B254] text-sm font-bold uppercase tracking-widest mb-2">Shop Our Farm</h2>
+            <h3 className="text-3xl md:text-4xl font-serif font-bold text-[#002147]">Just For You</h3>
+          </div>
+          <button className="text-[#002147] font-bold hover:text-[#E2B254] transition-colors hidden sm:block border-b-2 border-[#002147] hover:border-[#E2B254] pb-1">
+            View All Catalog
+          </button>
         </div>
 
-        {/* Product Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        {/* Daraz-Style Dense Grid: 2 cols on mobile, up to 5 on large desktops */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-5">
           {products.map((product) => (
             <motion.div
               key={product.id}
-              variants={itemVariants}
-              whileHover={{ y: -8 }}
-              className="group bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
+              whileHover={{ y: -5 }}
+              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-[0_20px_40px_rgba(0,33,71,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full relative"
             >
-              {/* Image Container */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-creamBg h-72">
+              {product.badge && (
+                <div className="absolute top-3 left-3 z-20 bg-[#E2B254] text-[#002147] text-[10px] sm:text-xs font-bold px-2 py-1 rounded shadow-md uppercase">
+                  {product.badge}
+                </div>
+              )}
+              
+              <div className="relative aspect-square overflow-hidden bg-gray-50 p-4 flex items-center justify-center">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/400x400?text=Dairy+Product';
-                  }}
+                  className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500"
                 />
-                {/* Badge */}
-                {product.badge && (
-                  <span className="absolute top-4 right-4 bg-dairyGold text-dairyNavy px-3 py-1 rounded-full text-xs font-semibold font-dmsans z-20 shadow-md">
-                    {product.badge}
-                  </span>
-                )}
               </div>
 
-              {/* Product Info */}
-              <div className="p-6">
-                <div>
-                  <p className="text-dairyGold text-sm font-dmsans uppercase tracking-wide">
-                    {product.category}
-                  </p>
-                  <h4 className="text-xl font-fraunces font-bold text-dairyNavy mt-1">
-                    {product.name}
-                  </h4>
+              <div className="p-4 flex flex-col flex-grow">
+                <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider mb-1">{product.category}</p>
+                <h4 className="text-sm sm:text-base font-bold text-[#002147] leading-tight mb-2 line-clamp-2">
+                  {product.name}
+                </h4>
+                
+                <div className="mt-auto">
+                  <div className="flex items-baseline gap-2 mb-3">
+                    <span className="text-lg sm:text-xl font-bold text-[#E2B254]">
+                      Rs. {product.price}
+                    </span>
+                    {product.oldPrice && (
+                      <span className="text-xs text-gray-400 line-through">
+                        Rs. {product.oldPrice}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <button 
+                    onClick={() => addToCart(product)}
+                    className="w-full bg-gray-50 text-[#002147] border border-gray-200 py-2 sm:py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 group-hover:bg-[#002147] group-hover:text-white transition-colors duration-300"
+                  >
+                    <ShoppingCart size={16} />
+                    <span>Add to Cart</span>
+                  </button>
                 </div>
-
-                {/* Price */}
-                <div className="flex items-baseline gap-2 mt-3">
-                  <span className="text-2xl font-bold text-dairyNavy font-dmsans">
-                    {product.price}
-                  </span>
-                  <span className="text-gray-400 line-through text-sm">
-                    {product.oldPrice}
-                  </span>
-                </div>
-
-                {/* Action Button */}
-                <button className="w-full mt-5 bg-dairyNavy text-white py-3 rounded-full font-dmsans font-semibold hover:bg-dairyGold hover:text-dairyNavy transition-all duration-300 transform hover:scale-105 shadow-md">
-                  Add to Cart
-                </button>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

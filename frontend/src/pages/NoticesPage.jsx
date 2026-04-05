@@ -1,69 +1,44 @@
 // frontend/src/pages/NoticesPage.jsx
-const NoticesPage = () => {
+import { motion } from 'framer-motion';
+import { Bell, Calendar } from 'lucide-react';
+import MilkDivider from '../components/Home/MilkDivider';
+
+export default function NoticesPage() {
   const notices = [
-    { 
-      id: 1, 
-      title: "New Delivery Routes Expanded", 
-      date: "April 5, 2024", 
-      content: "We have expanded our delivery routes to cover more areas including Bhaktapur, Lalitpur, and Kirtipur. Now get fresh dairy products delivered to your doorstep." 
-    },
-    { 
-      id: 2, 
-      title: "Festival Special Offer", 
-      date: "April 1, 2024", 
-      content: "Get 20% off on all products this festival season. Offer valid till April 30th. Use code: FESTIVAL20" 
-    },
-    { 
-      id: 3, 
-      title: "Price Update Notice", 
-      date: "March 28, 2024", 
-      content: "Due to increased transportation costs, there will be a slight price adjustment effective from May 1st. Check our products page for updated prices." 
-    },
-    { 
-      id: 4, 
-      title: "New Product Launch", 
-      date: "March 20, 2024", 
-      content: "Introducing our new range of Flavored Lassi in Mango, Rose, and Sweet varieties. Available at all stores from April 1st." 
-    },
-    { 
-      id: 5, 
-      title: "Quality Certificate Achieved", 
-      date: "March 15, 2024", 
-      content: "Sita Ram Dairy has been awarded the Organic Certification from Nepal Organic Certification Center. Our products are now 100% certified organic." 
-    }
+    { id: 1, title: "New Tokha Delivery Routes", date: "April 5, 2026", type: "Logistics", content: "We have expanded our daily morning delivery routes to cover more areas including Budhanilkantha and Bansbari. Enjoy fresh A2 milk before 7 AM." },
+    { id: 2, title: "Biska Jatra Special Offer", date: "April 1, 2026", type: "Offer", content: "Celebrate the Nepali New Year with pure sweetness. Get 15% off on our famous Bhaktapur Juju Dhau. Use code: NEWYEAR83" },
+    { id: 3, title: "Organic Certification Renewed", date: "March 15, 2026", type: "Quality", content: "Sita Ram Dairy has successfully renewed its Premium Organic Certification. Our commitment to chemical-free farming remains absolute." }
   ];
 
   return (
-    <main>
-      <div className="bg-red-600 text-white py-16 text-center">
-        <h1 className="text-4xl font-fraunces font-bold">Latest Notices & Updates</h1>
-        <p className="mt-2 text-red-100">Stay informed about our latest announcements</p>
+    <main className="bg-[#F9F6F0] min-h-screen">
+      <div className="relative bg-[#002147] text-white pt-32 pb-24 text-center overflow-hidden">
+        <div className="relative z-10 max-w-3xl mx-auto px-6">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-16 h-16 bg-[#E2B254] rounded-full flex items-center justify-center mx-auto mb-6 text-[#002147]"><Bell size={32} /></motion.div>
+          <h1 className="text-5xl font-serif font-bold mb-4">Farm Updates</h1>
+          <p className="text-xl text-gray-300 font-light">Stay informed about our latest announcements and offers.</p>
+        </div>
+        <div className="absolute bottom-0 w-full z-20"><MilkDivider /></div>
       </div>
       
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <div className="space-y-6">
-          {notices.map((notice) => (
-            <div 
-              key={notice.id} 
-              className="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-600 hover:shadow-lg transition-all duration-300"
-            >
-              <div className="flex justify-between items-start mb-3">
-                <h3 className="text-xl font-fraunces font-bold text-red-700">
-                  {notice.title}
-                </h3>
-                <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                  {notice.date}
-                </span>
+      <div className="max-w-4xl mx-auto px-6 py-24">
+        <div className="space-y-8">
+          {notices.map((notice, index) => (
+            <motion.div key={notice.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} viewport={{ once: true }} className="bg-white p-8 rounded-3xl shadow-sm border-l-8 border-[#E2B254] hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-500" />
+              
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="bg-[#002147] text-[#E2B254] text-xs font-bold uppercase tracking-wider px-3 py-1 rounded">{notice.type}</span>
+                  <h3 className="text-2xl font-serif font-bold text-[#002147]">{notice.title}</h3>
+                </div>
+                <span className="flex items-center gap-2 text-sm font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-full"><Calendar size={14} /> {notice.date}</span>
               </div>
-              <p className="text-gray-600 leading-relaxed">
-                {notice.content}
-              </p>
-            </div>
+              <p className="text-gray-600 leading-relaxed text-lg">{notice.content}</p>
+            </motion.div>
           ))}
         </div>
       </div>
     </main>
   );
-};
-
-export default NoticesPage;
+}

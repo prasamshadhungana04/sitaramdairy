@@ -2,123 +2,104 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ShoppingCart, User, PhoneCall, Menu, X } from 'lucide-react';
 import ContactModal from '../ContactModal';
+import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
+import CartDrawer from './CartDrawer';
 
 const Header = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(3); // Example cart count
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const { cartItems } = useCart();
+  const { user, isAuthenticated } = useAuth();
   const location = useLocation();
   
-  const getActiveLink = () => {
-    const path = location.pathname;
-    if (path === '/') return 'home';
-    return path.slice(1);
-  };
-  
-  const [activeLink, setActiveLink] = useState(getActiveLink());
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const activeLink = location.pathname === '/' ? 'home' : location.pathname.slice(1);
   const [hoveredItem, setHoveredItem] = useState(null);
 
   const navItems = [
     { id: 'home', label: 'Home', path: '/' },
     { id: 'products', label: 'Products', path: '/products' },
-    { id: 'about', label: 'About Us', path: '/about' },
-    { id: 'services', label: 'Services', path: '/services' }, // Changed from Dealers to Services
-    { id: 'notices', label: 'Notices', path: '/notices' },
+    { id: 'about', label: 'Our Story', path: '/about' },
+    { id: 'services', label: 'Services', path: '/services' },
+    { id: 'notices', label: 'Farm Updates', path: '/notices' },
   ];
-
-  const handleNavClick = (id) => {
-    setActiveLink(id);
-  };
 
   return (
     <>
-      <header className="bg-white shadow-md sticky top-0 z-40">
+      <header className="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            {/* Logo */}
-            <Link to="/" onClick={() => handleNavClick('home')} className="flex items-center gap-2 group">
-              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center group-hover:bg-red-700 transition-all duration-300 transform group-hover:scale-110">
-                <span className="text-white font-bold text-xl">S</span>
+            
+            {/* Premium Logo */}
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-12 h-12 bg-[#002147] rounded-full flex items-center justify-center group-hover:bg-[#E2B254] transition-colors duration-500 shadow-md">
+                <span className="text-[#E2B254] group-hover:text-[#002147] font-serif font-bold text-xl transition-colors duration-500">SR</span>
               </div>
-              <h1 className="text-2xl font-fraunces font-bold text-red-700 group-hover:text-red-600 transition-colors">
-                Sita Ram Dairy
-              </h1>
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-serif font-bold text-[#002147] leading-none">Sita Ram</h1>
+                <span className="text-[10px] font-bold text-[#E2B254] uppercase tracking-[0.2em]">Organic Dairy</span>
+              </div>
             </Link>
 
-            {/* Navigation */}
-            <nav className="hidden md:flex gap-8">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex gap-8 items-center">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.path}
                   onMouseEnter={() => setHoveredItem(item.id)}
                   onMouseLeave={() => setHoveredItem(null)}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`font-dmsans font-semibold transition-all duration-300 relative ${
-                    activeLink === item.id
-                      ? 'text-red-600'
-                      : 'text-gray-600 hover:text-red-500'
+                  className={`text-sm font-bold tracking-wider uppercase transition-colors duration-300 relative ${
+                    activeLink === item.id ? 'text-[#002147]' : 'text-gray-400 hover:text-[#002147]'
                   }`}
                 >
-                  <span className="relative inline-block">
-                    {item.label}
-                    {/* Hover animation line */}
-                    {hoveredItem === item.id && activeLink !== item.id && (
-                      <motion.span
-                        initial={{ width: 0 }}
-                        animate={{ width: '100%' }}
-                        exit={{ width: 0 }}
-                        className="absolute -bottom-1 left-0 h-0.5 bg-red-400"
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
-                  </span>
+                  {item.label}
+                  {hoveredItem === item.id && activeLink !== item.id && (
+                    <motion.div layoutId="navHover" className="absolute -bottom-2 left-0 right-0 h-0.5 bg-[#E2B254]" />
+                  )}
                   {activeLink === item.id && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-red-600"
-                      initial={false}
-                      transition={{ duration: 0.3 }}
-                    />
+                    <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-[#002147]" />
                   )}
                 </Link>
               ))}
             </nav>
 
-            {/* Right side buttons - Cart and Login */}
-            <div className="flex items-center gap-4">
-              {/* Cart Button */}
-              <Link to="/cart" className="relative group">
-                <button className="relative p-2 rounded-full hover:bg-red-50 transition-all duration-300">
-                  <svg 
-                    className="w-6 h-6 text-gray-700 group-hover:text-red-600 transition-colors" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6M18 13l1.5 6M9 21h6M12 15v6" />
-                  </svg>
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                      {cartCount}
-                    </span>
-                  )}
-                </button>
-              </Link>
+            {/* Actions */}
+            <div className="flex items-center gap-5">
+              {/* Contact Icon */}
+              <button onClick={() => setIsContactOpen(true)} className="hidden sm:flex text-gray-400 hover:text-[#002147] transition-colors">
+                <PhoneCall size={20} />
+              </button>
 
-              {/* Login Button */}
-              <Link to="/login">
-                <button className="bg-transparent border-2 border-red-600 text-red-600 px-5 py-2 rounded-full font-dmsans font-semibold hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105">
+              {/* User/Auth */}
+              {isAuthenticated ? (
+                <Link to={user?.role === 'admin' ? '/admin' : '/history'} className="text-gray-400 hover:text-[#002147] transition-colors">
+                  <User size={22} />
+                </Link>
+              ) : (
+                <Link to="/login" className="hidden sm:block text-sm font-bold text-[#002147] hover:text-[#E2B254] transition-colors uppercase tracking-wider">
                   Login
-                </button>
-              </Link>
+                </Link>
+              )}
 
-              {/* Contact Button */}
-              <button
-                onClick={() => setIsContactOpen(true)}
-                className="bg-red-600 text-white px-5 py-2 rounded-full font-dmsans font-semibold hover:bg-red-700 transition-all duration-300 transform hover:scale-105"
-              >
-                Contact
+              {/* Cart Drawer Toggle */}
+              <button onClick={() => setIsCartOpen(true)} className="relative text-gray-400 hover:text-[#002147] transition-colors p-1">
+                <ShoppingCart size={24} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-[#E2B254] text-[#002147] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Mobile Menu Toggle */}
+              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-[#002147]">
+                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>
           </div>
@@ -126,6 +107,7 @@ const Header = () => {
       </header>
 
       <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 };

@@ -1,20 +1,28 @@
 // frontend/src/components/Checkout/CheckoutPage.jsx
 import { motion } from 'framer-motion';
+import { ShieldCheck } from 'lucide-react';
 
 export default function CheckoutComponent({ cartTotal, handleEsewaPayment, transactionUuid }) {
   return (
-    <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-      <h2 className="text-xl font-semibold mb-6 text-textMain">Payment Details</h2>
-      <div className="bg-cream p-4 rounded-lg mb-8 border border-yellow-100">
-        <p className="text-lg text-textMain">
-          Amount to Pay: <strong className="text-green-700 ml-2">Rs. {cartTotal}</strong>
-        </p>
+    <div className="w-full">
+      <div className="bg-[#F9F6F0] p-6 rounded-2xl mb-8 border border-gray-200 flex justify-between items-center">
+        <div>
+          <p className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Total Amount Due</p>
+          <p className="text-3xl text-[#002147] font-bold">Rs. {cartTotal}</p>
+        </div>
+        <ShieldCheck size={40} className="text-[#E2B254]" />
       </div>
 
-      <div className="mb-6">
-        <h3 className="font-medium text-textMain mb-2">Order Information</h3>
-        <p className="text-sm text-gray-600">Order ID: <span className="font-mono">{transactionUuid}</span></p>
-        <p className="text-sm text-gray-600">Payment Method: eSewa Mobile Wallet</p>
+      <div className="mb-8 p-6 border border-gray-100 rounded-2xl">
+        <h3 className="font-bold text-[#002147] mb-4 text-lg">Transaction Information</h3>
+        <div className="flex justify-between items-center py-2 border-b border-gray-50">
+          <span className="text-gray-500">Order ID:</span>
+          <span className="font-mono font-bold text-[#002147]">{transactionUuid}</span>
+        </div>
+        <div className="flex justify-between items-center py-2">
+          <span className="text-gray-500">Gateway:</span>
+          <span className="font-bold text-[#60bb46]">eSewa Digital Wallet</span>
+        </div>
       </div>
 
       {/* Hidden Form for eSewa Test Environment */}
@@ -28,16 +36,15 @@ export default function CheckoutComponent({ cartTotal, handleEsewaPayment, trans
           <input type="hidden" id="success_url" name="success_url" value="http://localhost:5173/checkout/success" required />
           <input type="hidden" id="failure_url" name="failure_url" value="http://localhost:5173/checkout/failure" required />
           <input type="hidden" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required />
-          {/* Note: In production, the signature MUST be generated via Backend API */}
           <input type="hidden" id="signature" name="signature" value="SIMULATED_HMAC_SHA256_STRING" required />
           
           <motion.button 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleEsewaPayment}
-            className="w-full bg-[#60bb46] text-white font-bold py-4 rounded-lg hover:bg-[#509f39] transition-colors shadow-md flex items-center justify-center gap-2"
+            className="w-full bg-[#60bb46] text-white font-bold text-lg py-5 rounded-xl hover:bg-[#509f39] transition-colors shadow-[0_10px_20px_rgba(96,187,70,0.3)] flex items-center justify-center gap-3"
           >
-            Pay with eSewa
+            Pay Securely with eSewa
           </motion.button>
       </form>
     </div>

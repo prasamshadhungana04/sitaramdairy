@@ -2,7 +2,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
-export const useAuth = () => useContext(CartContext); // Kept here just in case, but usually useAuth is imported from AuthContext directly
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
@@ -38,7 +37,8 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  const cartTotal = cartItems.reduce((sum, item) => sum + (item.price_npr * item.quantity), 0);
+  // Ensure price is treated as a number for accurate subtotal calculation
+  const cartTotal = cartItems.reduce((sum, item) => sum + (Number(item.price_npr) * item.quantity), 0);
 
   return (
     <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, cartTotal }}>

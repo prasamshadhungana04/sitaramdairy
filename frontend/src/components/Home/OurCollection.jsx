@@ -12,7 +12,7 @@ const OurCollection = () => {
       title: "Pure Cow Milk",
       subtitle: "A2 Protein Rich",
       image: "https://images.pexels.com/photos/139172/pexels-photo-139172.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹60/L",
+      price: "Rs. 130/L",
       badge: "BESTSELLER",
     },
     {
@@ -21,16 +21,16 @@ const OurCollection = () => {
       title: "Bilona Ghee",
       subtitle: "Traditional Method",
       image: "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹450/500ml",
+      price: "Rs. 1200/500ml",
       badge: "PURE A2",
     },
     {
       id: 3,
       name: "PROBIOTIC",
-      title: "Thick Curd",
-      subtitle: "Live Cultures",
+      title: "Juju Dhau",
+      subtitle: "King of Curds",
       image: "https://images.pexels.com/photos/4146459/pexels-photo-4146459.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹45/500g",
+      price: "Rs. 150/500g",
       badge: "CREAMY",
     },
     {
@@ -39,74 +39,35 @@ const OurCollection = () => {
       title: "Paneer Cubes",
       subtitle: "Soft & Fresh",
       image: "https://images.pexels.com/photos/4614288/pexels-photo-4614288.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹200/500g",
+      price: "Rs. 350/500g",
       badge: "PROTEIN RICH",
-    },
-    {
-      id: 5,
-      name: "ARTISAN",
-      title: "Flavored Lassi",
-      subtitle: "Mango & Sweet",
-      image: "https://images.pexels.com/photos/4082971/pexels-photo-4082971.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹35/200ml",
-      badge: "BESTSELLER",
-    },
-    {
-      id: 6,
-      name: "PURE",
-      title: "Desi Butter",
-      subtitle: "Salted & Unsalted",
-      image: "https://images.pexels.com/photos/3944095/pexels-photo-3944095.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹120/200g",
-      badge: "CREAMY",
-    },
-    {
-      id: 7,
-      name: "TRADITIONAL",
-      title: "Chaas",
-      subtitle: "Spiced Buttermilk",
-      image: "https://images.pexels.com/photos/4082971/pexels-photo-4082971.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹30/200ml",
-      badge: "REFRESHING",
-    },
-    {
-      id: 8,
-      name: "HERITAGE",
-      title: "Shrikhand",
-      subtitle: "Saffron Elaichi",
-      image: "https://images.pexels.com/photos/4146459/pexels-photo-4146459.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "₹120/250g",
-      badge: "DESSERT",
     }
   ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
   };
 
   const itemVariants = {
     hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
   return (
     <section className="py-24 bg-white relative overflow-hidden">
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-red-600 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-red-600 rounded-full blur-3xl" />
+      {/* Animated Liquid Orbs Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div 
+          animate={{ y: [0, 40, 0], scale: [1, 1.2, 1] }} 
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-20 -left-20 w-96 h-96 bg-[#E2B254]/10 rounded-full blur-[80px]" 
+        />
+        <motion.div 
+          animate={{ y: [0, -40, 0], scale: [1, 1.1, 1] }} 
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-10 -right-20 w-[30rem] h-[30rem] bg-[#002147]/5 rounded-full blur-[100px]" 
+        />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -117,16 +78,13 @@ const OurCollection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-red-600 text-sm uppercase tracking-[0.3em] font-dmsans mb-4">
+          <h2 className="text-[#E2B254] text-sm uppercase tracking-[0.3em] font-bold mb-4">
             Our Collection
           </h2>
-          <h3 className="text-5xl md:text-6xl font-fraunces font-bold text-red-800 mb-6">
-            Premium Dairy <span className="text-red-500">Selection</span>
+          <h3 className="text-5xl md:text-6xl font-serif font-extrabold text-[#002147] mb-6">
+            Premium Dairy <span className="text-[#E2B254]">Selection</span>
           </h3>
-          <div className="w-32 h-0.5 bg-red-500 mx-auto mb-6" />
-          <p className="text-gray-600 max-w-2xl mx-auto font-dmsans">
-            Discover our range of farm-fresh, organic dairy products crafted with tradition and purity
-          </p>
+          <div className="w-24 h-1 bg-[#E2B254] mx-auto mb-6 rounded-full" />
         </motion.div>
 
         <motion.div
@@ -142,88 +100,53 @@ const OurCollection = () => {
               variants={itemVariants}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className="group cursor-pointer transition-all duration-500 ease-out transform hover:scale-105 hover:shadow-2xl"
-              style={{ 
-                transform: hoveredId === item.id ? 'translateY(-10px) scale(1.02)' : 'translateY(0) scale(1)',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-              }}
+              className="group cursor-pointer relative"
             >
-              <div className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-red-200/50 transition-all duration-500">
-                <div className="relative overflow-hidden bg-gradient-to-br from-red-50 to-white h-64">
+              <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-[0_20px_40px_rgba(0,33,71,0.12)] transition-all duration-500 relative z-10 h-full flex flex-col">
+                <div className="relative overflow-hidden bg-[#F9F6F0] h-64">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-all duration-500 ease-out"
-                    style={{
-                      transform: hoveredId === item.id ? 'scale(1.15)' : 'scale(1)',
-                      transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                    }}
-                    onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/400x400?text=Dairy+Product';
-                    }}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
                   
-                  {/* Dark Overlay on Hover */}
-                  <div 
-                    className="absolute inset-0 bg-gradient-to-t from-red-900 to-transparent transition-all duration-500"
-                    style={{ opacity: hoveredId === item.id ? 0.6 : 0 }}
-                  />
+                  {/* Navy Gradient Overlay on Hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#002147]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  <span className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold font-dmsans shadow-lg z-10">
+                  <span className="absolute top-4 right-4 bg-[#E2B254] text-[#002147] px-3 py-1 rounded shadow-md text-xs font-bold uppercase tracking-wider z-10">
                     {item.badge}
                   </span>
-                  
-                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full transition-all duration-300" style={{ transform: hoveredId === item.id ? 'scale(1.05)' : 'scale(1)' }}>
-                    <p className="text-red-600 text-xs font-bold tracking-wider">
-                      {item.name}
-                    </p>
-                  </div>
                 </div>
 
-                <div className="p-5 text-center">
-                  <h4 className="text-xl font-fraunces font-bold text-red-800 mb-2 transition-colors duration-300" style={{ color: hoveredId === item.id ? '#DC2626' : '#991B1B' }}>
+                <div className="p-6 flex flex-col flex-grow text-center">
+                  <p className="text-[#E2B254] text-xs font-bold tracking-widest uppercase mb-2">
+                    {item.name}
+                  </p>
+                  <h4 className="text-2xl font-serif font-bold text-[#002147] mb-2">
                     {item.title}
                   </h4>
-                  <p className="text-gray-500 text-sm font-dmsans mb-3">
+                  <p className="text-gray-500 text-sm mb-4">
                     {item.subtitle}
                   </p>
                   
-                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
-                    <span className="text-2xl font-bold text-red-700 font-dmsans">
+                  <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <span className="text-xl font-bold text-[#002147]">
                       {item.price}
                     </span>
-                    <button 
-                      className="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-dmsans font-semibold hover:bg-red-700 transition-all duration-300 transform hover:scale-105"
-                      style={{ 
-                        backgroundColor: hoveredId === item.id ? '#DC2626' : '#991B1B',
-                        transition: 'all 0.3s ease'
-                      }}
-                    >
+                    <button className="bg-[#002147] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-[#E2B254] hover:text-[#002147] transition-colors duration-300 shadow-md">
                       Shop Now
                     </button>
                   </div>
                 </div>
               </div>
-
-              {/* Shadow Effect on Hover */}
+              
+              {/* 3D Under-Shadow */}
               <div 
-                className="absolute -bottom-2 left-4 right-4 h-8 bg-red-600/20 rounded-full blur-xl transition-all duration-500"
-                style={{ opacity: hoveredId === item.id ? 1 : 0, transform: hoveredId === item.id ? 'scale(1.1)' : 'scale(0.9)' }}
+                className="absolute -bottom-4 left-4 right-4 h-8 bg-[#002147]/20 rounded-full blur-xl transition-all duration-500 z-0"
+                style={{ opacity: hoveredId === item.id ? 1 : 0, transform: hoveredId === item.id ? 'scale(1)' : 'scale(0.8)' }}
               />
             </motion.div>
           ))}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <button className="bg-transparent border-2 border-red-600 text-red-600 px-8 py-3 rounded-full font-dmsans font-semibold hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105">
-            View All Products →
-          </button>
         </motion.div>
       </div>
     </section>
