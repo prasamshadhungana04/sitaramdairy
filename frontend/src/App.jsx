@@ -1,5 +1,6 @@
 // frontend/src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // Global Layout Components
 import Header from './components/Layout/Header';
@@ -10,7 +11,7 @@ import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AboutPage from './pages/AboutPage';
-import ServicesPage from  './pages/ServicesPage';
+import ServicesPage from './pages/ServicesPage';
 import NoticesPage from './pages/NoticesPage';
 
 // Shopping, Checkout & History
@@ -29,9 +30,22 @@ import OrderManagement from './admin/OrderManagement';
 import BannerManagement from './admin/BannerManagement';
 
 /**
+ * ScrollToTop Utility Component
+ * Forces the browser to the top of the page on every route change.
+ */
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
+/**
  * PublicLayout Wrapper
- * Ensures Header and Footer only appear on user-facing pages,
- * not on the clean Admin Dashboard.
+ * Ensures Header and Footer only appear on user-facing pages.
  */
 const PublicLayout = ({ children }) => (
   <div className="flex flex-col min-h-screen">
@@ -46,12 +60,14 @@ const PublicLayout = ({ children }) => (
 function App() {
   return (
     <Router 
-      // Future flags to remove Vite/React-Router v7 console warnings
       future={{ 
         v7_startTransition: true, 
         v7_relativeSplatPath: true 
       }}
     >
+      {/* Global Scroll Handler */}
+      <ScrollToTop />
+
       <Routes>
         {/* === PUBLIC USER ROUTES === */}
         <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
@@ -72,12 +88,10 @@ function App() {
 
         {/* === ADMIN PANEL (NESTED) === */}
         <Route path="/admin" element={<Dashboard />}>
-          {/* Default view for /admin is Product Management */}
           <Route index element={<ProductManagement />} />
           <Route path="products" element={<ProductManagement />} />
           <Route path="orders" element={<OrderManagement />} />
           <Route path="banners" element={<BannerManagement />} />
-          {/* Catch-all for undefined admin tabs */}
           <Route path="users" element={<div className="p-8 text-[#002147] font-bold">User Management coming soon...</div>} />
         </Route>
 

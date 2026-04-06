@@ -1,12 +1,12 @@
 // frontend/src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Lock, Mail, User, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, User, ArrowRight, Shield } from 'lucide-react';
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [focusedField, setFocusedField] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({ 
     email: '', 
     password: '', 
@@ -15,159 +15,181 @@ export default function LoginPage() {
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
   
-  const handleSubmit = (e) => { 
+  const handleSubmit = async (e) => { 
     e.preventDefault(); 
-    console.log('Authenticating...', formData); 
+    setIsLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      console.log('Authenticating...', formData);
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
-    <main className="min-h-screen bg-cheeseCream flex items-center justify-center py-24 px-6 relative overflow-hidden">
-      
-      {/* === ARTISANAL AMBIENT BACKGROUND === */}
-      <div className="absolute top-0 right-0 w-[45rem] h-[45rem] bg-[#7A0000]/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[50rem] h-[50rem] bg-[#1A1A1A]/5 rounded-full blur-[160px] pointer-events-none" />
-
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        className="w-full max-w-lg bg-white rounded-[3.5rem] shadow-premium overflow-hidden border border-gray-100 relative z-10"
-      >
-        {/* === BRANDED HEADER === */}
-        <div className="bg-[#1A1A1A] p-12 text-center relative overflow-hidden border-b-[6px] border-[#7A0000]">
-          {/* Subtle Geometric Overlay */}
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
-          
-          <motion.div 
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="absolute inset-0 flex items-center justify-center opacity-[0.04] pointer-events-none"
-          >
-            <span className="text-[12rem] font-serif font-black text-white">SR</span>
-          </motion.div>
-
-          <h1 className="text-4xl md:text-5xl font-serif font-black text-white relative z-10 red-text-shadow tracking-tight">
-            {isLogin ? 'Member Login' : 'Create Account'}
-          </h1>
-          <p className="text-[#7A0000] font-black uppercase tracking-[0.4em] text-[10px] mt-4 relative z-10 opacity-90">
-            {isLogin ? 'Secure Access to Sita Ram Ledger' : 'Join the Organic Dairy Heritage'}
-          </p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Brand */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-red-700">Sita Ram</h1>
+          <p className="text-sm text-gray-500 mt-1">Organic Dairy Heritage</p>
         </div>
 
-        <div className="p-10 md:p-14">
-          {/* === NAVIGATION TOGGLE === */}
-          <div className="flex p-1.5 bg-cheeseCream rounded-[1.5rem] mb-12 border border-gray-100 shadow-inner">
-            <button 
-              onClick={() => setIsLogin(true)} 
-              className={`flex-1 py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 ${
-                isLogin ? 'bg-white text-[#7A0000] shadow-md' : 'text-gray-400 hover:text-[#1A1A1A]'
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          {/* Tabs */}
+          <div className="flex border-b border-gray-100">
+            <button
+              onClick={() => setIsLogin(true)}
+              className={`flex-1 py-4 text-sm font-medium transition-colors ${
+                isLogin 
+                  ? 'text-red-700 border-b-2 border-red-700' 
+                  : 'text-gray-400 hover:text-gray-600'
               }`}
             >
               Sign In
             </button>
-            <button 
-              onClick={() => setIsLogin(false)} 
-              className={`flex-1 py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 ${
-                !isLogin ? 'bg-white text-[#7A0000] shadow-md' : 'text-gray-400 hover:text-[#1A1A1A]'
+            <button
+              onClick={() => setIsLogin(false)}
+              className={`flex-1 py-4 text-sm font-medium transition-colors ${
+                !isLogin 
+                  ? 'text-red-700 border-b-2 border-red-700' 
+                  : 'text-gray-400 hover:text-gray-600'
               }`}
             >
-              Register
+              Create Account
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-7">
-            <AnimatePresence mode="wait">
-              {!isLogin && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="space-y-2"
-                >
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Full Legal Name</label>
-                  <div className="relative group">
-                    <User className={`absolute left-5 top-1/2 -translate-y-1/2 transition-colors ${focusedField === 'name' ? 'text-[#7A0000]' : 'text-gray-300'}`} size={20} />
-                    <input 
-                      type="text" 
-                      name="name" 
-                      onFocus={() => setFocusedField('name')}
-                      onBlur={() => setFocusedField(null)}
-                      value={formData.name} 
-                      onChange={handleChange} 
-                      placeholder="e.g. Ram Bahadur"
-                      className="w-full pl-14 pr-6 py-5 bg-cheeseCream/50 border-2 border-transparent focus:border-[#7A0000]/10 focus:bg-white rounded-[1.25rem] outline-none transition-all font-bold text-[#1A1A1A] placeholder:text-gray-300 shadow-sm" 
-                    />
+          {/* Form */}
+          <div className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <AnimatePresence mode="wait">
+                {!isLogin && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mb-4">
+                      <label className="block text-xs font-medium text-gray-700 mb-1">
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="John Doe"
+                          className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-colors text-sm"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="you@example.com"
+                    className="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-colors text-sm"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="block text-xs font-medium text-gray-700">
+                    Password
+                  </label>
+                  {isLogin && (
+                    <button type="button" className="text-xs text-red-600 hover:text-red-700 transition-colors">
+                      Forgot?
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="••••••••"
+                    className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-colors text-sm"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-red-700 text-white py-2.5 rounded-lg font-medium text-sm hover:bg-red-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed mt-6"
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span>Processing...</span>
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    {isLogin ? 'Sign In' : 'Create Account'}
+                    <ArrowRight size={16} />
+                  </span>
+                )}
+              </button>
+            </form>
 
-            {/* Email Field */}
-            <div className="space-y-2">
-              <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Email Identifier</label>
-              <div className="relative">
-                <Mail className={`absolute left-5 top-1/2 -translate-y-1/2 transition-colors ${focusedField === 'email' ? 'text-[#7A0000]' : 'text-gray-300'}`} size={20} />
-                <input 
-                  type="email" 
-                  name="email" 
-                  onFocus={() => setFocusedField('email')}
-                  onBlur={() => setFocusedField(null)}
-                  value={formData.email} 
-                  onChange={handleChange} 
-                  placeholder="name@heritage.com"
-                  className="w-full pl-14 pr-6 py-5 bg-cheeseCream/50 border-2 border-transparent focus:border-[#7A0000]/10 focus:bg-white rounded-[1.25rem] outline-none transition-all font-bold text-[#1A1A1A] placeholder:text-gray-300 shadow-sm" 
-                />
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-100"></div>
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="px-2 bg-white text-gray-400 flex items-center gap-1">
+                  <Shield size={12} />
+                  Secure authentication
+                </span>
               </div>
             </div>
 
-            {/* Password Field */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center px-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Security Key</label>
-                {isLogin && <button type="button" className="text-[9px] font-black text-[#7A0000] uppercase tracking-tighter hover:underline">Forgot Key?</button>}
+            {/* Demo Hint */}
+            {isLogin && (
+              <div className="text-center">
+                <p className="text-xs text-gray-400">
+                  Demo: demo@example.com / any password
+                </p>
               </div>
-              <div className="relative">
-                <Lock className={`absolute left-5 top-1/2 -translate-y-1/2 transition-colors ${focusedField === 'password' ? 'text-[#7A0000]' : 'text-gray-300'}`} size={20} />
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  name="password" 
-                  onFocus={() => setFocusedField('password')}
-                  onBlur={() => setFocusedField(null)}
-                  value={formData.password} 
-                  onChange={handleChange} 
-                  placeholder="••••••••••••"
-                  className="w-full pl-14 pr-14 py-5 bg-cheeseCream/50 border-2 border-transparent focus:border-[#7A0000]/10 focus:bg-white rounded-[1.25rem] outline-none transition-all font-bold text-[#1A1A1A] placeholder:text-gray-300 shadow-sm" 
-                />
-                <button 
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-[#7A0000] transition-colors"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-
-            <button 
-              type="submit" 
-              className="w-full bg-[#1A1A1A] text-white py-6 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-[#7A0000] transition-all duration-500 shadow-redGlow mt-6 flex items-center justify-center gap-4 group"
-            >
-              {isLogin ? 'Verify & Access' : 'Establish Account'}
-              <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-            </button>
-          </form>
-
-          {/* === SECURITY FOOTER === */}
-          <div className="mt-12 pt-8 border-t border-gray-50 flex flex-col items-center gap-4">
-             <div className="flex items-center gap-3 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                <ShieldCheck size={16} className="text-green-600" />
-                <span>AES-256 Encrypted Connection</span>
-             </div>
-             <p className="text-[9px] text-gray-300 font-bold max-w-[200px] text-center leading-relaxed">
-               By accessing the Sita Ram Portal, you agree to our Heritage Data Terms.
-             </p>
+            )}
           </div>
         </div>
-      </motion.div>
-    </main>
+
+        {/* Footer */}
+        <p className="text-center text-xs text-gray-400 mt-6">
+          Protected by industry-standard encryption
+        </p>
+      </div>
+    </div>
   );
 }

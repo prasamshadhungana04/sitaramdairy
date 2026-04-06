@@ -7,57 +7,89 @@ const OurCollection = () => {
   const collections = [
     {
       id: 1,
-      name: "FARM FRESH",
-      title: "Pure Cow Milk",
-      subtitle: "A2 Protein Rich",
-      image:
-        "https://images.pexels.com/photos/139172/pexels-photo-139172.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "Rs. 130/L",
-      badge: "BESTSELLER",
+      name: "ARTISANAL",
+      title: "Premium Ghee",
+      subtitle: "Traditional Bilona Style",
+      image: "/ghee.png",
+      price: "Rs. 950/L",
+      badge: "NATURAL ENERGY",
     },
     {
       id: 2,
-      name: "PREMIUM",
-      title: "Bilona Ghee",
-      subtitle: "Traditional Method",
-      image:
-        "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "Rs. 1200/500ml",
-      badge: "PURE A2",
+      name: "HEALTHY",
+      title: "Processed Butter",
+      subtitle: "Creamy & Himalayan Fresh",
+      image: "/butter.png",
+      price: "Rs. 250/200g",
+      badge: "BESTSELLER",
     },
     {
       id: 3,
       name: "PROBIOTIC",
-      title: "Juju Dhau",
-      subtitle: "King of Curds",
-      image:
-        "https://images.pexels.com/photos/4146459/pexels-photo-4146459.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "Rs. 150/500g",
-      badge: "CREAMY",
+      title: "Sita Ram Dahi",
+      subtitle: "Pure Thick Yogurt",
+      image: "/dahi.png",
+      price: "Rs. 120/500g",
+      badge: "SUGAR FREE",
     },
     {
       id: 4,
-      name: "ORGANIC",
-      title: "Paneer Cubes",
-      subtitle: "Soft & Fresh",
-      image:
-        "https://images.pexels.com/photos/4614288/pexels-photo-4614288.jpeg?auto=compress&cs=tinysrgb&w=600",
-      price: "Rs. 350/500g",
-      badge: "PROTEIN RICH",
+      name: "PROTEIN RICH",
+      title: "Fresh Paneer",
+      subtitle: "Soft & Vacuum Packed",
+      image: "/paneer.png",
+      price: "Rs. 380/500g",
+      badge: "NEW",
+    },
+    {
+      id: 5,
+      name: "REFRESHING",
+      title: "Strawberry Lassi",
+      subtitle: "Real Fruit Fusion",
+      image: "/strawberrylassi.png",
+      price: "Rs. 60/200ml",
+      badge: "FRUITY",
+    },
+    {
+      id: 6,
+      name: "ENERGY",
+      title: "Keshar Milk",
+      subtitle: "Saffron Infused Low Fat",
+      image: "/kesharmilk.png",
+      price: "Rs. 80/200ml",
+      badge: "FRESH",
+    },
+    {
+      id: 7,
+      name: "TRADITIONAL",
+      title: "Sweet Lassi",
+      subtitle: "Calcium & Protein Source",
+      image: "/lassi.png",
+      price: "Rs. 50/200ml",
+      badge: "CLASSIC",
+    },
+    {
+      id: 8,
+      name: "DAILY ESSENTIAL",
+      title: "Medium Dahi",
+      subtitle: "Pure Milk Curd",
+      image: "/medium_dahi.png",
+      price: "Rs. 80/250g",
+      badge: "CREAMY",
     },
   ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
   const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
   };
 
@@ -100,7 +132,7 @@ const OurCollection = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {collections.map((item) => (
             <motion.div
@@ -113,47 +145,47 @@ const OurCollection = () => {
               <div className="bg-[#FFFCF5] rounded-2xl overflow-hidden shadow-lg border border-dairyRed/10 hover:shadow-premium transition-all duration-500 flex flex-col h-full">
                 
                 {/* Image */}
-                <div className="relative h-64 overflow-hidden bg-cheeseCream">
+                <div className="relative h-64 overflow-hidden bg-white">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-dairyRed/80 to-transparent opacity-0 group-hover:opacity-100 transition" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dairyRed/20 to-transparent opacity-0 group-hover:opacity-100 transition" />
 
-                  <span className="absolute top-4 right-4 bg-dairyRed text-white px-3 py-1 text-xs font-bold rounded">
+                  <span className="absolute top-4 right-4 bg-dairyRed text-white px-3 py-1 text-[10px] font-bold rounded shadow-lg">
                     {item.badge}
                   </span>
                 </div>
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-grow text-center">
-                  <p className="text-dairyRed text-xs font-bold uppercase mb-2 tracking-widest">
+                  <p className="text-dairyRed text-[10px] font-bold uppercase mb-2 tracking-widest">
                     {item.name}
                   </p>
 
-                  <h4 className="text-2xl font-serif font-bold text-dairyBlack mb-2">
+                  <h4 className="text-xl font-serif font-bold text-dairyBlack mb-1">
                     {item.title}
                   </h4>
 
-                  <p className="text-gray-500 text-sm mb-4">
+                  <p className="text-gray-500 text-xs mb-4">
                     {item.subtitle}
                   </p>
 
                   <div className="mt-auto pt-4 border-t border-dairyRed/10 flex justify-between items-center">
-                    <span className="text-xl font-bold text-dairyRed">
+                    <span className="text-lg font-bold text-dairyRed">
                       {item.price}
                     </span>
 
-                    <button className="bg-dairyRed text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-dairyBlack transition">
-                      Shop Now
+                    <button className="bg-dairyRed text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-dairyBlack transition-colors shadow-md">
+                      Add to Cart
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* Hover Shadow */}
+              {/* Hover Glow */}
               <div
                 className={`absolute -bottom-4 left-4 right-4 h-8 bg-dairyRed/20 rounded-full blur-xl transition-all duration-500 ${
                   hoveredId === item.id ? "opacity-100 scale-100" : "opacity-0 scale-75"

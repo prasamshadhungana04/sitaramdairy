@@ -37,9 +37,12 @@ const Header = () => {
           <div className="flex justify-between items-center">
             
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 bg-dairyBlack rounded-full flex items-center justify-center group-hover:bg-dairyRed transition-colors duration-500 shadow-[0_4px_15px_rgba(0,0,0,0.15)]">
-                <span className="text-white font-serif font-bold text-xl">SR</span>
-              </div>
+              {/* Replaced SR badge with logo.png */}
+              <img 
+                src="/logo.png" 
+                alt="Sita Ram Organic Dairy Logo" 
+                className="w-14 h-14 object-contain group-hover:scale-105 transition-transform duration-300"
+              />
               <div className="hidden sm:block">
                 <h1 className="text-xl font-serif font-bold text-dairyBlack leading-none">Sita Ram</h1>
                 <span className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Organic Dairy</span>

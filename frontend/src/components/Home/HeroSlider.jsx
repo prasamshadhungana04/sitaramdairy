@@ -6,13 +6,13 @@ import MilkDivider from './MilkDivider';
 const HeroSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  const slides = [
+    const slides = [
     {
       id: 1,
       title: "Pure Organic Milk",
       subtitle: "Fresh from our happy cows",
       description: "Farm-fresh, A2 organic milk delivered to your door every morning.",
-      image: "https://www.tastingtable.com/img/gallery/35-types-of-cheese-explained/intro-1673986196.jpg",
+      image: "/hero_1.png", // Image 1
       buttonText: "Shop Now"
     },
     {
@@ -20,8 +20,16 @@ const HeroSlider = () => {
       title: "Artisanal Ghee",
       subtitle: "Traditional Bilona Method",
       description: "Slow-churned, aromatic golden ghee. Rich in nutrients and pure taste.",
-      image: "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      image: "/hero_2.png", // Image 2
       buttonText: "Explore Ghee"
+    },
+    {
+      id: 3,
+      title: "Fresh Dairy Products",
+      subtitle: "Straight from nature",
+      description: "Experience the true taste of purity with our wide range of organic dairy products.",
+      image: "/hero_3.png", // Image 3
+      buttonText: "View Collection"
     }
   ];
 
