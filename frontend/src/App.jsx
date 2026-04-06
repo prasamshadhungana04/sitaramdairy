@@ -10,7 +10,7 @@ import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AboutPage from './pages/AboutPage';
-import ServicesPage from './pages/ServicesPage';
+import ServicesPage from  './pages/ServicesPage';
 import NoticesPage from './pages/NoticesPage';
 
 // Shopping, Checkout & History

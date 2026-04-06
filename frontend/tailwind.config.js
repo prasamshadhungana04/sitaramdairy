@@ -9,7 +9,7 @@ export default {
     extend: {
       colors: {
         creamBg: "#F9F6F0",
-        dairyNavy: "#002147",
+        dairyMaroon: "#a80000",
         dairyGold: "#E2B254",
       },
       fontFamily: {
@@ -17,8 +17,9 @@ export default {
         dmsans: ["DM Sans", "sans-serif"],
       },
       boxShadow: {
-        'premium': '0 20px 40px -10px rgba(0, 33, 71, 0.1)',
+        'premium': '0 20px 40px -10px rgba(128, 0, 0, 0.1)',
         'gold': '0 10px 25px -5px rgba(226, 178, 84, 0.3)',
+        'maroon': '0 10px 25px -5px rgba(128, 0, 0, 0.2)',
       },
       animation: {
         'slow-zoom': 'slowZoom 20s ease-out infinite alternate',

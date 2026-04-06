@@ -34,7 +34,7 @@ export default function Login({ handleSubmit, setEmail, setPassword, error }) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           type="submit"
-          className="w-full flex justify-center py-4 border border-transparent rounded-xl shadow-lg text-lg font-bold text-white bg-[#002147] hover:bg-[#E2B254] hover:text-[#002147] transition-colors mt-2"
+          className="w-full flex justify-center py-4 border border-transparent rounded-xl shadow-lg text-lg font-bold text-white bg-[#a80000] hover:bg-[#E2B254] hover:text-[#a80000] transition-colors mt-2"
         >
           Secure Login
         </motion.button>

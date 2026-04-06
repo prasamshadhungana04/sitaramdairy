@@ -10,7 +10,7 @@
   
   body {
     /* Global Premium Defaults */
-    @apply bg-[#F9F6F0] font-sans text-[#002147];
+    @apply bg-[#F9F6F0] font-sans text-[#a80000];
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -27,13 +27,13 @@
     background: #F9F6F0;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #002147;
+    background: #a80000;
     border-radius: 10px;
   }
   
   /* Text Stroke for Floating Typography */
   .outline-text {
-    -webkit-text-stroke: 1px #002147;
+    -webkit-text-stroke: 1px #a80000;
     color: transparent;
   }
 

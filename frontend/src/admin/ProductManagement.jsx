@@ -67,12 +67,12 @@ export default function ProductManagement() {
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
         <div>
-          <h2 className="text-xl font-bold text-[#002147]">Inventory Catalog</h2>
+          <h2 className="text-xl font-bold text-[#a80000]">Inventory Catalog</h2>
           <p className="text-sm text-gray-500">Manage your 13 premium dairy products here.</p>
         </div>
         <button 
           onClick={() => { setEditingId(null); setFormData({ name: '', category: 'Milk', price_npr: '', stock_quantity: '', description: '' }); setIsModalOpen(true); }}
-          className="bg-[#002147] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#E2B254] hover:text-[#002147] transition-all duration-300 flex items-center gap-2 shadow-lg"
+          className="bg-[#a80000] text-white px-5 py-2.5 rounded-xl font-medium hover:bg-[#E2B254] hover:text-[#a80000] transition-all duration-300 flex items-center gap-2 shadow-lg"
         >
           <Plus size={18} /> Add Product
         </button>
@@ -97,12 +97,12 @@ export default function ProductManagement() {
                 <td className="p-4 flex items-center gap-4">
                   <img src={p.image_url || 'https://via.placeholder.com/50'} alt={p.name} className="w-12 h-12 rounded-lg object-cover border border-gray-100 shadow-sm" />
                   <div>
-                    <p className="font-bold text-[#002147]">{p.name}</p>
+                    <p className="font-bold text-[#a80000]">{p.name}</p>
                     <p className="text-xs text-gray-400">ID: #{p.id}</p>
                   </div>
                 </td>
                 <td className="p-4 text-gray-600 font-medium">{p.category}</td>
-                <td className="p-4 text-[#002147] font-bold">Rs. {Number(p.price_npr).toLocaleString('en-IN')}</td>
+                <td className="p-4 text-[#a80000] font-bold">Rs. {Number(p.price_npr).toLocaleString('en-IN')}</td>
                 <td className="p-4">
                   {p.stock_quantity > 10 ? (
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700"><CheckCircle2 size={12}/> In Stock ({p.stock_quantity})</span>
@@ -111,7 +111,7 @@ export default function ProductManagement() {
                   )}
                 </td>
                 <td className="p-4 text-right space-x-2">
-                  <button onClick={() => openEditModal(p)} className="p-2 text-gray-400 hover:text-[#002147] hover:bg-gray-100 rounded-lg transition-colors"><Edit size={18} /></button>
+                  <button onClick={() => openEditModal(p)} className="p-2 text-gray-400 hover:text-[#a80000] hover:bg-gray-100 rounded-lg transition-colors"><Edit size={18} /></button>
                   <button onClick={() => handleDelete(p.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={18} /></button>
                 </td>
               </tr>
@@ -122,10 +122,10 @@ export default function ProductManagement() {
 
       {/* Modern Add/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-[#002147]/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-[#a80000]/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div className="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-              <h3 className="text-xl font-bold text-[#002147]">{editingId ? 'Edit Product' : 'New Premium Product'}</h3>
+              <h3 className="text-xl font-bold text-[#a80000]">{editingId ? 'Edit Product' : 'New Premium Product'}</h3>
               <button type="button" onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-700">✕</button>
             </div>
             <div className="p-6 space-y-4">
@@ -144,7 +144,7 @@ export default function ProductManagement() {
             </div>
             <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
               <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl font-medium text-gray-600 hover:bg-gray-200 transition-colors">Cancel</button>
-              <button type="submit" className="px-5 py-2.5 rounded-xl font-bold bg-[#002147] text-white hover:bg-[#E2B254] hover:text-[#002147] transition-colors shadow-lg">Save Product</button>
+              <button type="submit" className="px-5 py-2.5 rounded-xl font-bold bg-[#a80000] text-white hover:bg-[#E2B254] hover:text-[#a80000] transition-colors shadow-lg">Save Product</button>
             </div>
           </form>
         </div>

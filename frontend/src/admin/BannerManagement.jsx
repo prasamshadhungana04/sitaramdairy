@@ -15,9 +15,9 @@ export default function BannerManagement() {
         <div className="w-16 h-16 bg-[#E2B254]/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
           <UploadCloud className="text-[#E2B254]" size={32} />
         </div>
-        <h3 className="text-lg font-bold text-[#002147] mb-1">Upload New Cinematic Banner</h3>
+        <h3 className="text-lg font-bold text-[#a80000] mb-1">Upload New Cinematic Banner</h3>
         <p className="text-sm text-gray-500 mb-4">PNG, JPG or WEBP up to 2MB. Recommended ratio 16:9.</p>
-        <button className="bg-[#002147] text-white px-6 py-2.5 rounded-full font-medium hover:bg-[#E2B254] hover:text-[#002147] transition-all shadow-md">
+        <button className="bg-[#a80000] text-white px-6 py-2.5 rounded-full font-medium hover:bg-[#E2B254] hover:text-[#a80000] transition-all shadow-md">
           Browse Files
         </button>
       </div>
@@ -25,7 +25,7 @@ export default function BannerManagement() {
       {/* Banners Grid */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 border-b border-gray-100 bg-gray-50/50">
-          <h2 className="text-xl font-bold text-[#002147] flex items-center gap-2"><ImageIcon className="text-[#E2B254]"/> Active Slides</h2>
+          <h2 className="text-xl font-bold text-[#a80000] flex items-center gap-2"><ImageIcon className="text-[#E2B254]"/> Active Slides</h2>
         </div>
         
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -33,11 +33,11 @@ export default function BannerManagement() {
             <div key={banner.id} className="group relative rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300">
               {/* Drag Handle Overlay */}
               <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur p-2 rounded-lg cursor-grab opacity-0 group-hover:opacity-100 transition-opacity">
-                <GripHorizontal size={20} className="text-[#002147]" />
+                <GripHorizontal size={20} className="text-[#a80000]" />
               </div>
 
               <div className="relative h-48 w-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#002147]/80 to-transparent z-10"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#a80000]/80 to-transparent z-10"></div>
                 <img src={banner.image_url} alt={banner.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <h3 className="absolute bottom-4 left-4 text-white font-serif font-bold text-xl z-20">{banner.title}</h3>
               </div>

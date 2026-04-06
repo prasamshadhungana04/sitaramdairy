@@ -24,13 +24,13 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen bg-[#F9F6F0] overflow-hidden">
       {/* Premium Navy Sidebar */}
-      <aside className="w-72 bg-[#002147] text-white flex flex-col shadow-2xl z-20 relative">
+      <aside className="w-72 bg-[#a80000] text-white flex flex-col shadow-2xl z-20 relative">
         {/* Subtle Milk Texture Overlay */}
         <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
         
         <div className="p-8 border-b border-white/10 relative z-10">
           <Link to="/" className="text-2xl font-serif font-extrabold text-white tracking-tight flex items-center gap-2">
-            <span className="w-8 h-8 bg-[#E2B254] rounded-full flex items-center justify-center text-[#002147] text-sm">SR</span>
+            <span className="w-8 h-8 bg-[#E2B254] rounded-full flex items-center justify-center text-[#a80000] text-sm">SR</span>
             Sita Ram <span className="text-[#E2B254]">Admin</span>
           </Link>
         </div>
