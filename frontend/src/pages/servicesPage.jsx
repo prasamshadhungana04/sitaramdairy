@@ -1,7 +1,7 @@
 // frontend/src/pages/ServicesPage.jsx
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Truck, PackageOpen, CalendarDays, Map, Sparkles, Headset } from 'lucide-react';
+import { Truck, PackageOpen, CalendarDays, Map, Sparkles, Headset, Check } from 'lucide-react';
 import MilkDivider from '../components/Home/MilkDivider';
 
 const ServicesPage = () => {
@@ -13,7 +13,7 @@ const ServicesPage = () => {
       title: "White-Glove Delivery",
       icon: Truck,
       description: "Fresh, temperature-controlled dairy delivered to your Kathmandu Valley doorstep by 7 AM.",
-      features: ["Free delivery above Rs. 2000", "Cold-chain logistics", "Real-time SMS tracking"]
+      features: ["Free delivery above NPR 2000", "Cold-chain logistics", "Real-time SMS tracking"]
     },
     {
       id: 2,
@@ -63,26 +63,54 @@ const ServicesPage = () => {
   };
 
   return (
-    <main className="bg-[#F9F6F0] min-h-screen">
-      {/* Premium Hero Section */}
-      <div className="relative bg-[#002147] text-white pt-32 pb-24 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-        <div className="relative z-10 max-w-3xl mx-auto px-6">
-          <h2 className="text-[#E2B254] text-sm uppercase tracking-[0.3em] font-bold mb-4">How We Serve You</h2>
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">Premium Services</h1>
-          <p className="text-xl text-gray-300 font-light tracking-wide">Tailored dairy solutions for households and enterprises.</p>
+    <main className="bg-cheeseCream min-h-screen">
+      
+      {/* === PREMIUM HERO SECTION === */}
+      <div className="relative bg-dairyBlack text-white pt-40 pb-32 text-center overflow-hidden">
+        {/* Ambient Red Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] bg-dairyRed/10 rounded-full blur-[150px] pointer-events-none" />
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
+          <motion.h2 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-dairyRed text-sm uppercase tracking-[0.4em] font-black mb-4"
+          >
+            How We Serve You
+          </motion.h2>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-6xl md:text-7xl font-serif font-bold mb-6 text-white red-text-shadow"
+          >
+            Premium <span className="text-dairyRed italic">Services</span>
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-xl text-gray-400 font-medium tracking-wide max-w-2xl mx-auto"
+          >
+            Tailored dairy solutions for households and leading hospitality enterprises in Nepal.
+          </motion.p>
         </div>
-        <div className="absolute bottom-0 w-full z-20"><MilkDivider /></div>
+        
+        {/* Milk Divider (Wave matches cheeseCream bg) */}
+        <div className="absolute bottom-0 w-full z-20">
+          <MilkDivider />
+        </div>
       </div>
       
-      {/* Services Grid */}
-      <div className="max-w-7xl mx-auto px-6 py-24">
+      {/* === SERVICES GRID === */}
+      <div className="max-w-7xl mx-auto px-6 py-32">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
         >
           {services.map((service) => {
             const IconComponent = service.icon;
@@ -94,34 +122,41 @@ const ServicesPage = () => {
                 variants={cardVariants}
                 onMouseEnter={() => setHoveredService(service.id)}
                 onMouseLeave={() => setHoveredService(null)}
-                className="bg-white rounded-3xl shadow-sm overflow-hidden border border-gray-100 cursor-pointer relative group transition-all duration-500"
+                className="bg-white rounded-[2.5rem] shadow-premium overflow-hidden border border-gray-100 cursor-pointer relative group transition-all duration-500"
                 style={{
-                  transform: isHovered ? 'translateY(-10px)' : 'translateY(0)',
-                  boxShadow: isHovered ? '0 30px 40px -15px rgba(0, 33, 71, 0.1)' : '0 10px 15px -3px rgba(0, 0, 0, 0.05)'
+                  transform: isHovered ? 'translateY(-15px)' : 'translateY(0)',
+                  boxShadow: isHovered ? '0 30px 60px -15px rgba(200, 16, 46, 0.15)' : '0 10px 30px -10px rgba(0, 0, 0, 0.05)'
                 }}
               >
-                {/* Hover Accent Line */}
-                <div className={`absolute top-0 left-0 w-full h-1 bg-[#E2B254] transition-transform duration-500 origin-left ${isHovered ? 'scale-x-100' : 'scale-x-0'}`} />
+                {/* Active Red Top Border */}
+                <div className={`absolute top-0 left-0 w-full h-2 bg-dairyRed transition-transform duration-700 origin-left ${isHovered ? 'scale-x-100' : 'scale-x-0'}`} />
 
-                <div className="p-8">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-colors duration-500 ${isHovered ? 'bg-[#002147] text-[#E2B254]' : 'bg-[#F9F6F0] text-[#002147]'}`}>
-                    <IconComponent size={32} strokeWidth={1.5} />
+                <div className="p-10">
+                  {/* Icon Box */}
+                  <div className={`w-20 h-20 rounded-[1.5rem] flex items-center justify-center mb-8 transition-all duration-500 shadow-inner ${
+                    isHovered ? 'bg-dairyRed text-white rotate-6' : 'bg-cheeseCream text-dairyRed'
+                  }`}>
+                    <IconComponent size={36} strokeWidth={2} />
                   </div>
                   
-                  <h3 className="text-2xl font-serif font-bold text-[#002147] mb-4">
+                  <h3 className={`text-2xl font-serif font-bold transition-colors duration-300 mb-4 ${
+                    isHovered ? 'text-dairyRed' : 'text-dairyBlack'
+                  }`}>
                     {service.title}
                   </h3>
                   
-                  <p className="text-gray-500 mb-6 leading-relaxed line-clamp-2">
+                  <p className="text-gray-500 mb-8 leading-relaxed font-medium">
                     {service.description}
                   </p>
                   
-                  <div className="border-t border-gray-100 pt-6">
-                    <ul className="space-y-3">
+                  <div className="border-t border-gray-50 pt-8">
+                    <ul className="space-y-4">
                       {service.features.map((feature, idx) => (
-                        <li key={idx} className="text-sm font-medium flex items-center gap-3 text-gray-600">
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold transition-colors ${isHovered ? 'bg-[#E2B254] text-[#002147]' : 'bg-[#002147]/10 text-[#002147]'}`}>
-                            ✓
+                        <li key={idx} className="text-sm font-bold flex items-center gap-4 text-gray-600">
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                            isHovered ? 'bg-dairyRed text-white shadow-redGlow' : 'bg-cheeseCream text-dairyRed'
+                          }`}>
+                            <Check size={14} strokeWidth={4} />
                           </span> 
                           {feature}
                         </li>
@@ -129,10 +164,27 @@ const ServicesPage = () => {
                     </ul>
                   </div>
                 </div>
+
+                {/* Subtle decorative background detail */}
+                <div className={`absolute -bottom-8 -right-8 w-24 h-24 bg-dairyRed/5 rounded-full blur-2xl transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
               </motion.div>
             );
           })}
         </motion.div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="max-w-5xl mx-auto px-6 pb-32">
+        <div className="bg-dairyBlack rounded-[3rem] p-12 text-center relative overflow-hidden shadow-2xl">
+          <div className="absolute inset-0 bg-dairyRed/5 pointer-events-none" />
+          <h4 className="text-white font-serif font-bold text-3xl mb-4 relative z-10">Need a Custom Solution?</h4>
+          <p className="text-gray-400 font-medium mb-10 relative z-10 max-w-xl mx-auto">
+            Our dairy scientists and farm managers are available to create bespoke products for your specific enterprise needs.
+          </p>
+          <button className="bg-dairyRed text-white px-12 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-dairyBlack transition-all shadow-redGlow relative z-10">
+            Consult With Our Team
+          </button>
+        </div>
       </div>
     </main>
   );

@@ -1,6 +1,6 @@
 // frontend/src/admin/Dashboard.jsx
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Package, ShoppingCart, Image as ImageIcon, Users, LogOut, LayoutDashboard } from 'lucide-react';
+import { Package, ShoppingCart, Image as ImageIcon, Users, LogOut, LayoutDashboard, ChevronRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Dashboard() {
@@ -22,69 +22,96 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex h-screen bg-[#F9F6F0] overflow-hidden">
-      {/* Premium Navy Sidebar */}
-      <aside className="w-72 bg-[#a80000] text-white flex flex-col shadow-2xl z-20 relative">
-        {/* Subtle Milk Texture Overlay */}
-        <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] pointer-events-none"></div>
-        
-        <div className="p-8 border-b border-white/10 relative z-10">
-          <Link to="/" className="text-2xl font-serif font-extrabold text-white tracking-tight flex items-center gap-2">
-            <span className="w-8 h-8 bg-[#E2B254] rounded-full flex items-center justify-center text-[#a80000] text-sm">SR</span>
-            Sita Ram <span className="text-[#E2B254]">Admin</span>
+    <div className="flex h-screen bg-cheeseCream overflow-hidden">
+      
+      {/* === PREMIUM ONYX SIDEBAR === */}
+      <aside className="w-72 bg-dairyBlack text-white flex flex-col shadow-2xl z-20 relative">
+        {/* Subtle Branding Header */}
+        <div className="p-8 border-b border-white/5 relative z-10">
+          <Link to="/" className="group flex items-center gap-3">
+            <div className="w-10 h-10 bg-dairyRed rounded-xl flex items-center justify-center shadow-redGlow group-hover:scale-110 transition-transform">
+              <span className="text-white font-serif font-bold text-lg">SR</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl font-serif font-bold text-white tracking-tight">Sita Ram</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-dairyRed">Admin Panel</span>
+            </div>
           </Link>
         </div>
 
-        <nav className="flex-grow p-6 space-y-2 relative z-10 overflow-y-auto">
+        {/* Navigation Links */}
+        <nav className="flex-grow p-6 space-y-2 relative z-10 overflow-y-auto custom-scrollbar">
           {navItems.map((item) => {
-            const isActive = item.exact ? location.pathname === item.path : location.pathname.startsWith(item.path);
+            const isActive = item.exact 
+              ? location.pathname === item.path 
+              : location.pathname.startsWith(item.path);
             const Icon = item.icon;
+
             return (
               <Link 
                 key={item.name} 
                 to={item.path} 
-                className={`flex items-center gap-3 p-3.5 rounded-xl font-medium transition-all duration-300 ${
+                className={`flex items-center justify-between p-4 rounded-2xl font-bold transition-all duration-300 group ${
                   isActive 
-                    ? 'bg-[#E2B254] text-[#002147] shadow-lg shadow-[#E2B254]/20 translate-x-1' 
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                    ? 'bg-dairyRed text-white shadow-redGlow translate-x-2' 
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 }`}
               >
-                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                {item.name}
+                <div className="flex items-center gap-3">
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-white' : 'group-hover:text-dairyRed transition-colors'} />
+                  <span className="text-sm tracking-wide">{item.name}</span>
+                </div>
+                {isActive && <ChevronRight size={16} className="text-white/50" />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-6 border-t border-white/10 relative z-10">
+        {/* Logout Section */}
+        <div className="p-6 border-t border-white/5 relative z-10">
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full p-3 rounded-xl text-red-300 hover:bg-red-500/10 hover:text-red-200 transition-colors"
+            className="flex items-center gap-3 w-full p-4 rounded-2xl text-gray-400 font-bold hover:bg-dairyRed/10 hover:text-dairyRed transition-all group"
           >
-            <LogOut size={20} />
-            Secure Logout
+            <LogOut size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <span className="text-sm uppercase tracking-widest">Logout</span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-grow flex flex-col h-screen overflow-hidden">
-        {/* Top Header */}
-        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shadow-sm shrink-0">
-          <h1 className="text-2xl font-serif font-bold text-[#002147]">
-            {navItems.find(i => i.path === location.pathname)?.name || 'Dashboard'}
-          </h1>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-bold text-[#002147]">{user?.name || 'Super Admin'}</p>
-              <p className="text-xs text-gray-500 uppercase tracking-wider">{user?.role || 'Admin'}</p>
+      {/* === MAIN CONTENT AREA === */}
+      <main className="flex-grow flex flex-col h-screen overflow-hidden bg-cheeseCream">
+        
+        {/* Top Header Row */}
+        <header className="h-24 bg-white/80 backdrop-blur-md border-b border-dairyRed/10 flex items-center justify-between px-10 shrink-0">
+          <div>
+            <h1 className="text-3xl font-serif font-bold text-dairyRed red-text-shadow">
+              {navItems.find(i => i.path === location.pathname)?.name || 'Admin Overview'}
+            </h1>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-1">
+              Sita Ram Organic Dairy Farm
+            </p>
+          </div>
+
+          <div className="flex items-center gap-6">
+            {/* User Profile Info */}
+            <div className="text-right border-r border-gray-100 pr-6">
+              <p className="text-sm font-black text-dairyBlack uppercase tracking-wider">{user?.name || 'Prashant Admin'}</p>
+              <p className="text-[10px] font-bold text-dairyRed uppercase tracking-widest">System Manager</p>
             </div>
-            <div className="w-10 h-10 bg-[#E2B254] rounded-full border-2 border-white shadow-md"></div>
+            
+            {/* Admin Avatar */}
+            <div className="relative">
+              <div className="w-12 h-12 bg-cheeseCream rounded-2xl border-2 border-dairyRed/20 flex items-center justify-center overflow-hidden shadow-sm">
+                <Users size={24} className="text-dairyRed" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+            </div>
           </div>
         </header>
 
-        {/* Scrollable Content */}
-        <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
+        {/* Dynamically Loaded Content (Products, Banners, etc.) */}
+        <div className="flex-grow overflow-y-auto p-10 custom-scrollbar">
           <Outlet />
         </div>
       </main>

@@ -1,110 +1,153 @@
-// frontend/src/components/ContactModal.jsx
+// frontend/src/components/Modals/ContactModal.jsx
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import { X, CheckCircle2 } from 'lucide-react';
+import { X, Send, CheckCircle2, User, Phone, Mail, MessageSquare } from 'lucide-react';
 
-const ContactModal = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+export default function ContactModal({ isOpen, onClose }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [activeField, setActiveField] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      onClose();
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    }, 2500);
+    setSubmitted(true);
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Blurred Backdrop */}
-          <motion.div
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* === BACKDROP (Dimmer) === */}
+          <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#002147]/60 backdrop-blur-sm z-50"
+            className="absolute inset-0 bg-[#1A1A1A]/80 backdrop-blur-md"
           />
-          
-          {/* Modal Container */}
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+
+          {/* === MODAL CARD === 
+              Background: Removed Cream, now Pure White 
+          */}
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0, y: 40 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.95, opacity: 0, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-3xl shadow-2xl z-50 overflow-hidden border border-gray-100"
+            exit={{ scale: 0.9, opacity: 0, y: 40 }}
+            className="relative w-full max-w-2xl bg-white rounded-[3.5rem] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden border-2 border-gray-50"
           >
-            {/* Premium Header */}
-            <div className="bg-[#002147] px-8 py-6 flex justify-between items-center relative overflow-hidden">
+            {/* CLOSE BUTTON */}
+            <button 
+              onClick={onClose}
+              className="absolute top-8 right-8 z-20 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white hover:text-[#7A0000] text-white rounded-full transition-all duration-300 group border border-white/30"
+            >
+              <X size={28} className="group-hover:rotate-90 transition-transform" />
+            </button>
+
+            {/* === HEADER: HERITAGE RED === */}
+            <div className="bg-[#7A0000] p-12 md:p-16 text-center relative border-b-8 border-[#7A0000]/5">
               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-              <div className="relative z-10">
-                <h2 className="text-2xl font-serif font-bold text-white">Contact Us</h2>
-                <p className="text-[#E2B254] text-sm mt-1">We'd love to hear from you</p>
+              
+              {/* Branded Watermark (SR) */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-[0.07] pointer-events-none">
+                <span className="text-[14rem] font-serif font-black text-white">SR</span>
               </div>
-              <button onClick={onClose} className="relative z-10 text-white/70 hover:text-[#E2B254] transition-colors p-2 hover:bg-white/10 rounded-full">
-                <X size={24} />
-              </button>
+
+              <h2 className="text-6xl md:text-7xl font-serif font-black text-white relative z-10 tracking-tight drop-shadow-xl">
+                Contact <span className="text-white opacity-70">Us</span>
+              </h2>
+              <p className="text-white font-black uppercase tracking-[0.6em] text-sm mt-4 relative z-10 opacity-90">
+                Direct Heritage Support
+              </p>
             </div>
 
-            {isSubmitted ? (
-              <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="p-12 text-center flex flex-col items-center">
-                <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500 mb-6">
-                  <CheckCircle2 size={40} />
-                </div>
-                <h3 className="text-2xl font-serif font-bold text-[#002147] mb-2">Message Received!</h3>
-                <p className="text-gray-500">Our support team will contact you shortly.</p>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="p-8 space-y-5 bg-[#F9F6F0]/50">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Full Name *</label>
-                    <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-[#E2B254] focus:ring-2 focus:ring-[#E2B254]/20 outline-none transition-all" />
+            {/* === FORM BODY: HIGH CONTRAST WHITE === */}
+            <div className="p-10 md:p-20 bg-white">
+              {!submitted ? (
+                <form onSubmit={handleSubmit} className="space-y-10">
+                  
+                  {/* Row 1: Name & Phone */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="space-y-4">
+                      <label className="text-sm font-black text-[#7A0000] uppercase tracking-widest ml-2">Full Name *</label>
+                      <div className="relative">
+                        <User className={`absolute left-6 top-1/2 -translate-y-1/2 transition-colors ${activeField === 'name' ? 'text-[#7A0000]' : 'text-gray-300'}`} size={24} />
+                        <input 
+                          type="text" required onFocus={() => setActiveField('name')} onBlur={() => setActiveField(null)}
+                          className="w-full pl-16 pr-6 py-6 bg-gray-50 border-2 border-transparent focus:border-[#7A0000] focus:bg-white rounded-[2rem] outline-none font-bold text-xl text-[#1A1A1A] transition-all shadow-sm"
+                          placeholder="Ram Bahadur"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <label className="text-sm font-black text-[#7A0000] uppercase tracking-widest ml-2">Phone Number</label>
+                      <div className="relative">
+                        <Phone className={`absolute left-6 top-1/2 -translate-y-1/2 transition-colors ${activeField === 'phone' ? 'text-[#7A0000]' : 'text-gray-300'}`} size={24} />
+                        <input 
+                          type="tel" onFocus={() => setActiveField('phone')} onBlur={() => setActiveField(null)}
+                          className="w-full pl-16 pr-6 py-6 bg-gray-50 border-2 border-transparent focus:border-[#7A0000] focus:bg-white rounded-[2rem] outline-none font-bold text-xl text-[#1A1A1A] transition-all shadow-sm"
+                          placeholder="+977..."
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Phone</label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-[#E2B254] focus:ring-2 focus:ring-[#E2B254]/20 outline-none transition-all" />
+
+                  {/* Row 2: Email */}
+                  <div className="space-y-4">
+                    <label className="text-sm font-black text-[#7A0000] uppercase tracking-widest ml-2">Email Identifier *</label>
+                    <div className="relative">
+                      <Mail className={`absolute left-6 top-1/2 -translate-y-1/2 transition-colors ${activeField === 'email' ? 'text-[#7A0000]' : 'text-gray-300'}`} size={24} />
+                      <input 
+                        type="email" required onFocus={() => setActiveField('email')} onBlur={() => setActiveField(null)}
+                        className="w-full pl-16 pr-6 py-6 bg-gray-50 border-2 border-transparent focus:border-[#7A0000] focus:bg-white rounded-[2rem] outline-none font-bold text-xl text-[#1A1A1A] transition-all shadow-sm"
+                        placeholder="email@heritage.com"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Email Address *</label>
-                  <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-[#E2B254] focus:ring-2 focus:ring-[#E2B254]/20 outline-none transition-all" />
-                </div>
+                  {/* Row 3: Message */}
+                  <div className="space-y-4">
+                    <label className="text-sm font-black text-[#7A0000] uppercase tracking-widest ml-2">Detailed Message *</label>
+                    <div className="relative">
+                      <MessageSquare className={`absolute left-6 top-7 transition-colors ${activeField === 'msg' ? 'text-[#7A0000]' : 'text-gray-300'}`} size={24} />
+                      <textarea 
+                        required rows="4" onFocus={() => setActiveField('msg')} onBlur={() => setActiveField(null)}
+                        className="w-full pl-16 pr-6 py-6 bg-gray-50 border-2 border-transparent focus:border-[#7A0000] focus:bg-white rounded-[2rem] outline-none font-bold text-xl text-[#1A1A1A] transition-all resize-none shadow-sm"
+                        placeholder="How can we assist you today?"
+                      ></textarea>
+                    </div>
+                  </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Subject *</label>
-                  <select name="subject" required value={formData.subject} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-[#E2B254] focus:ring-2 focus:ring-[#E2B254]/20 outline-none transition-all appearance-none">
-                    <option value="">Select a subject</option>
-                    <option value="general">General Tokha Farm Inquiry</option>
-                    <option value="order">Order & Subscription</option>
-                    <option value="delivery">Kathmandu Delivery Issue</option>
-                    <option value="product">Product Information</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Message *</label>
-                  <textarea name="message" required rows="4" value={formData.message} onChange={handleChange} className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-[#E2B254] focus:ring-2 focus:ring-[#E2B254]/20 outline-none transition-all resize-none" placeholder="How can we help you today?" />
-                </div>
-
-                <button type="submit" className="w-full bg-[#002147] text-white py-4 rounded-xl font-bold hover:bg-[#E2B254] hover:text-[#002147] transition-all duration-300 shadow-lg mt-2">
-                  Send Secure Message
-                </button>
-              </form>
-            )}
+                  {/* SUBMIT BUTTON */}
+                  <button 
+                    type="submit"
+                    className="w-full bg-[#7A0000] text-white py-7 rounded-[2rem] font-black text-base uppercase tracking-[0.5em] hover:bg-[#1A1A1A] transition-all duration-500 shadow-2xl flex items-center justify-center gap-6 group mt-10"
+                  >
+                    Dispatch Message
+                    <Send size={24} className="group-hover:translate-x-3 group-hover:-translate-y-3 transition-transform" />
+                  </button>
+                </form>
+              ) : (
+                /* SUCCESS STATE */
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-20"
+                >
+                  <div className="w-32 h-32 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-10 shadow-inner">
+                    <CheckCircle2 size={64} />
+                  </div>
+                  <h3 className="text-5xl font-serif font-black text-[#1A1A1A] mb-6 tracking-tight">Transmission Successful</h3>
+                  <p className="text-gray-500 font-bold text-xl max-w-md mx-auto leading-relaxed">Our farm management team will contact you within 4 hours.</p>
+                  <button 
+                    onClick={onClose}
+                    className="mt-16 bg-[#7A0000] text-white px-16 py-5 rounded-full font-black text-sm uppercase tracking-widest hover:bg-[#1A1A1A] transition-all shadow-xl hover:scale-105 active:scale-95"
+                  >
+                    Return to Portal
+                  </button>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );
-};
-
-export default ContactModal;
+}
