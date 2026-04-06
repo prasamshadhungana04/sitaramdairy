@@ -8,28 +8,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Luxury Red, White, and Black Palette
-        creamBg: "#FAFAFA",    // Pearl White (Soft, high-end background)
-        dairyNavy: "#171717",  // Onyx Black (Replaces basic black for text/headers)
-        dairyGold: "#991B1B",  // Deep Crimson (Replaces neon red for accents/buttons)
+        // Your new Professional Theme Colors
+        cheeseCream: "#FDF8E7", // Dark shade of white/cream for backgrounds
+        dairyRed: "#C8102E",    // Professional, striking bold Red
+        dairyBlack: "#1A1A1A",  // Deep black for standard text readability
       },
       fontFamily: {
         fraunces: ["Fraunces", "serif"],
         dmsans: ["DM Sans", "sans-serif"],
       },
       boxShadow: {
-        // Custom premium shadows optimized for the new dark and crimson tones
-        'premium': '0 20px 40px -10px rgba(23, 23, 23, 0.15)', 
-        'gold': '0 10px 25px -5px rgba(153, 27, 27, 0.25)', 
-      },
-      animation: {
-        'slow-zoom': 'slowZoom 20s ease-out infinite alternate',
-      },
-      keyframes: {
-        slowZoom: {
-          '0%': { transform: 'scale(1)' },
-          '100%': { transform: 'scale(1.15)' },
-        }
+        'premium': '0 20px 40px -10px rgba(200, 16, 46, 0.08)', 
+        'redGlow': '0 10px 25px -5px rgba(200, 16, 46, 0.2)', 
       }
     },
   },
