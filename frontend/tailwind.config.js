@@ -8,17 +8,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        creamBg: "#F9F6F0",
-        dairyNavy: "#002147",
-        dairyGold: "#E2B254",
+        // Luxury Red, White, and Black Palette
+        creamBg: "#FAFAFA",    // Pearl White (Soft, high-end background)
+        dairyNavy: "#171717",  // Onyx Black (Replaces basic black for text/headers)
+        dairyGold: "#991B1B",  // Deep Crimson (Replaces neon red for accents/buttons)
       },
       fontFamily: {
         fraunces: ["Fraunces", "serif"],
         dmsans: ["DM Sans", "sans-serif"],
       },
       boxShadow: {
-        'premium': '0 20px 40px -10px rgba(0, 33, 71, 0.1)',
-        'gold': '0 10px 25px -5px rgba(226, 178, 84, 0.3)',
+        // Custom premium shadows optimized for the new dark and crimson tones
+        'premium': '0 20px 40px -10px rgba(23, 23, 23, 0.15)', 
+        'gold': '0 10px 25px -5px rgba(153, 27, 27, 0.25)', 
       },
       animation: {
         'slow-zoom': 'slowZoom 20s ease-out infinite alternate',
