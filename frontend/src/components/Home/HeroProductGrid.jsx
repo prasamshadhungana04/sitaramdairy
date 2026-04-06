@@ -53,7 +53,8 @@ const HeroProductGrid = () => {
   };
 
   return (
-    <section className="py-24 bg-white border-b border-gray-100">
+    // Section Background: Changed to cheeseCream
+    <section className="py-24 bg-cheeseCream border-b border-dairyRed/10">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -62,13 +63,16 @@ const HeroProductGrid = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-[#E2B254] text-sm uppercase tracking-[0.3em] font-bold mb-4">
+          {/* Subtitle is Red */}
+          <h2 className="text-dairyRed text-sm uppercase tracking-[0.3em] font-bold mb-4">
             Premium Selection
           </h2>
-          <h3 className="text-4xl md:text-5xl font-serif font-bold text-[#002147] mb-6">
-            Our Signature <span className="text-[#E2B254]">Collection</span>
+          {/* Title is Black with Red accent */}
+          <h3 className="text-4xl md:text-5xl font-serif font-bold text-dairyBlack mb-6">
+            Our Signature <span className="text-dairyRed">Collection</span>
           </h3>
-          <div className="w-24 h-1 bg-[#E2B254] mx-auto rounded-full" />
+          {/* Underline is Red */}
+          <div className="w-24 h-1 bg-dairyRed mx-auto rounded-full" />
         </motion.div>
 
         <motion.div
@@ -83,36 +87,44 @@ const HeroProductGrid = () => {
               key={product.id}
               variants={itemVariants}
               whileHover={{ y: -5 }}
-              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_20px_40px_rgba(0,33,71,0.08)] transition-all duration-300 border border-gray-100"
+              // Card uses pure white to contrast against the cheeseCream background
+              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-premium transition-all duration-300 border border-dairyRed/5"
             >
               <div className="flex flex-col md:flex-row h-full">
-                <div className="md:w-2/5 relative overflow-hidden bg-[#F9F6F0]">
+                {/* Image Wrapper Background: cheeseCream */}
+                <div className="md:w-2/5 relative overflow-hidden bg-cheeseCream">
                   <img
                     src={product.image}
                     alt={product.title}
                     className="w-full h-64 md:h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-[#002147]/10 group-hover:bg-transparent transition-colors duration-500" />
-                  <span className="absolute top-4 left-4 bg-[#E2B254] text-[#002147] px-3 py-1 rounded shadow-md text-xs font-bold uppercase tracking-wider z-10">
+                  {/* Subtle Red Overlay on Image */}
+                  <div className="absolute inset-0 bg-dairyRed/10 group-hover:bg-transparent transition-colors duration-500" />
+                  
+                  {/* Badge: Red Background, White Text */}
+                  <span className="absolute top-4 left-4 bg-dairyRed text-white px-3 py-1 rounded shadow-md text-xs font-bold uppercase tracking-wider z-10">
                     {product.badge}
                   </span>
                 </div>
                 
                 <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center bg-white relative">
-                  {/* Subtle Background Accent */}
-                  <div className="absolute bottom-0 right-0 w-24 h-24 bg-[#E2B254]/5 rounded-tl-full pointer-events-none transition-transform duration-500 group-hover:scale-150" />
+                  {/* Subtle Background Accent: Red */}
+                  <div className="absolute bottom-0 right-0 w-24 h-24 bg-dairyRed/5 rounded-tl-full pointer-events-none transition-transform duration-500 group-hover:scale-150" />
                   
-                  <p className="text-[#E2B254] text-xs tracking-[0.2em] font-bold mb-2 uppercase">
+                  {/* Category Subtitle: Red */}
+                  <p className="text-dairyRed text-xs tracking-[0.2em] font-bold mb-2 uppercase">
                     {product.name}
                   </p>
-                  <h4 className="text-2xl md:text-3xl font-serif font-bold text-[#002147] mb-3">
+                  {/* Product Title: Black */}
+                  <h4 className="text-2xl md:text-3xl font-serif font-bold text-dairyBlack mb-3">
                     {product.title}
                   </h4>
                   <p className="text-gray-500 text-sm leading-relaxed mb-6 relative z-10">
                     {product.description}
                   </p>
                   
-                  <button className="text-[#002147] font-bold hover:text-[#E2B254] transition-colors duration-300 inline-flex items-center gap-2 group/btn w-fit mt-auto relative z-10">
+                  {/* Action Link: Red, hovers to Black */}
+                  <button className="text-dairyRed font-bold hover:text-dairyBlack transition-colors duration-300 inline-flex items-center gap-2 group/btn w-fit mt-auto relative z-10">
                     Discover More 
                     <ArrowRight size={18} className="transform group-hover/btn:translate-x-1 transition-transform duration-300" />
                   </button>

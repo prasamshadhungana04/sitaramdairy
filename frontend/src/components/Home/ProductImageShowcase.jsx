@@ -3,21 +3,29 @@ import { motion } from 'framer-motion';
 import { ZoomIn } from 'lucide-react';
 
 const ProductImageShowcase = () => {
+  // Added auto=format&fit=crop to ensure images load flawlessly
   const galleryImages = [
-    { id: 1, image: "https://images.unsplash.com/photo-1596181938555-d3c52e46e8c7?w=600&q=80", alt: "Fresh Milk Pouring" },
-    { id: 2, image: "https://images.unsplash.com/photo-1601314101416-3687edec84b3?w=600&q=80", alt: "Golden Ghee" },
-    { id: 3, image: "https://images.unsplash.com/photo-1574221199321-419163f9ebba?w=600&q=80", alt: "Traditional Yogurt" },
-    { id: 4, image: "https://images.unsplash.com/photo-1631379578027-114414f52e37?w=600&q=80", alt: "Fresh Paneer" },
-    { id: 5, image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&q=80", alt: "Dairy Bottles" },
-    { id: 6, image: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=600&q=80", alt: "Farm Aesthetic" }
+    { id: 1, image: "https://images.unsplash.com/photo-1596181938555-d3c52e46e8c7?auto=format&fit=crop&w=600&q=80", alt: "Fresh Milk Pouring" },
+    { id: 2, image: "https://images.unsplash.com/photo-1601314101416-3687edec84b3?auto=format&fit=crop&w=600&q=80", alt: "Golden Ghee" },
+    { id: 3, image: "https://images.unsplash.com/photo-1574221199321-419163f9ebba?auto=format&fit=crop&w=600&q=80", alt: "Traditional Yogurt" },
+    { id: 4, image: "https://images.unsplash.com/photo-1631379578027-114414f52e37?auto=format&fit=crop&w=600&q=80", alt: "Fresh Paneer" },
+    { id: 5, image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80", alt: "Dairy Bottles" },
+    { id: 6, image: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&w=600&q=80", alt: "Farm Aesthetic" }
   ];
 
   return (
-    <section className="py-24 bg-white">
+    // Background updated to global cheeseCream
+    <section className="py-24 bg-cheeseCream">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-[#E2B254] text-sm uppercase tracking-[0.3em] font-bold mb-4">Our Farm Gallery</h2>
-          <h3 className="text-4xl font-serif font-bold text-[#002147]">Visual Journey</h3>
+          {/* Subtitle updated to dairyRed */}
+          <h2 className="text-dairyRed text-sm uppercase tracking-[0.3em] font-bold mb-4">
+            Our Farm Gallery
+          </h2>
+          {/* Title updated to dairyBlack */}
+          <h3 className="text-4xl md:text-5xl font-serif font-bold text-dairyBlack">
+            Visual Journey
+          </h3>
         </div>
 
         <motion.div
@@ -35,7 +43,8 @@ const ProductImageShowcase = () => {
                 visible: { scale: 1, opacity: 1, transition: { duration: 0.5 } }
               }}
               whileHover={{ y: -10 }}
-              className="relative overflow-hidden rounded-2xl shadow-md cursor-pointer group bg-[#F9F6F0]"
+              // Card background updated to white with a subtle red border
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-premium cursor-pointer group bg-white border border-dairyRed/5"
               style={{ aspectRatio: '4 / 3' }}
             >
               <img
@@ -43,11 +52,15 @@ const ProductImageShowcase = () => {
                 alt={item.alt}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              {/* Premium Hover Overlay */}
-              <div className="absolute inset-0 bg-[#002147]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
-                <div className="bg-[#E2B254] p-4 rounded-full text-[#002147] transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+              
+              {/* Premium Hover Overlay: Dark blur for contrast */}
+              <div className="absolute inset-0 bg-dairyBlack/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
+                
+                {/* Zoom Button: Red background, White icon */}
+                <div className="bg-dairyRed p-4 rounded-full text-white transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
                   <ZoomIn size={24} />
                 </div>
+                
               </div>
             </motion.div>
           ))}

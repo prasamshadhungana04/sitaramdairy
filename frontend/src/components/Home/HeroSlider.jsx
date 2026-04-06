@@ -12,7 +12,7 @@ const HeroSlider = () => {
       title: "Pure Organic Milk",
       subtitle: "Fresh from our happy cows",
       description: "Farm-fresh, A2 organic milk delivered to your door every morning.",
-      image: "https://images.pexels.com/photos/139172/pexels-photo-139172.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      image: "https://www.tastingtable.com/img/gallery/35-types-of-cheese-explained/intro-1673986196.jpg",
       buttonText: "Shop Now"
     },
     {
@@ -33,7 +33,7 @@ const HeroSlider = () => {
   }, [slides.length]);
 
   return (
-    <div className="relative h-[90vh] md:h-screen overflow-hidden bg-[#002147]">
+    <div className="relative h-[90vh] md:h-screen overflow-hidden bg-[#a80000]">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
@@ -48,7 +48,7 @@ const HeroSlider = () => {
             style={{ backgroundImage: `url(${slides[currentIndex].image})` }}
           >
             {/* Deep Navy Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#002147]/90 via-[#002147]/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#a80000]/90 via-[#a80000]/50 to-transparent" />
           </div>
           
           <div className="relative h-full flex items-center max-w-7xl mx-auto px-6 lg:px-8">
@@ -70,7 +70,7 @@ const HeroSlider = () => {
               <p className="text-lg md:text-xl mb-10 text-gray-200 font-sans max-w-lg">
                 {slides[currentIndex].description}
               </p>
-              <button className="bg-[#E2B254] text-[#002147] px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:bg-white transition-all duration-300 transform hover:-translate-y-1 shadow-[0_10px_20px_rgba(226,178,84,0.3)]">
+              <button className="bg-[#E2B254] text-[#a80000] px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:bg-white transition-all duration-300 transform hover:-translate-y-1 shadow-[0_10px_20px_rgba(226,178,84,0.3)]">
                 {slides[currentIndex].buttonText}
               </button>
             </motion.div>

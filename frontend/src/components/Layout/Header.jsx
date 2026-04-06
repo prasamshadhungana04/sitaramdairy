@@ -31,22 +31,21 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
+      {/* 3D FROSTED GLASS HEADER */}
+      <header className="bg-white/40 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] sticky top-0 z-40 border-b border-white/60">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             
-            {/* Premium Logo */}
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 bg-[#002147] rounded-full flex items-center justify-center group-hover:bg-[#E2B254] transition-colors duration-500 shadow-md">
-                <span className="text-[#E2B254] group-hover:text-[#002147] font-serif font-bold text-xl transition-colors duration-500">SR</span>
+              <div className="w-12 h-12 bg-dairyBlack rounded-full flex items-center justify-center group-hover:bg-dairyRed transition-colors duration-500 shadow-[0_4px_15px_rgba(0,0,0,0.15)]">
+                <span className="text-white font-serif font-bold text-xl">SR</span>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-serif font-bold text-[#002147] leading-none">Sita Ram</h1>
-                <span className="text-[10px] font-bold text-[#E2B254] uppercase tracking-[0.2em]">Organic Dairy</span>
+                <h1 className="text-xl font-serif font-bold text-dairyBlack leading-none">Sita Ram</h1>
+                <span className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Organic Dairy</span>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden lg:flex gap-8 items-center">
               {navItems.map((item) => (
                 <Link
@@ -54,51 +53,49 @@ const Header = () => {
                   to={item.path}
                   onMouseEnter={() => setHoveredItem(item.id)}
                   onMouseLeave={() => setHoveredItem(null)}
-                  className={`text-sm font-bold tracking-wider uppercase transition-colors duration-300 relative ${
-                    activeLink === item.id ? 'text-[#002147]' : 'text-gray-400 hover:text-[#002147]'
+                  className={`text-sm tracking-wider uppercase transition-all duration-300 relative cursor-pointer ${
+                    activeLink === item.id 
+                      ? 'text-dairyBlack font-bold' 
+                      : 'text-gray-700 font-medium hover:text-dairyBlack hover:font-bold'
                   }`}
                 >
                   {item.label}
+                  
                   {hoveredItem === item.id && activeLink !== item.id && (
-                    <motion.div layoutId="navHover" className="absolute -bottom-2 left-0 right-0 h-0.5 bg-[#E2B254]" />
+                    <motion.div layoutId="navHover" className="absolute -bottom-2 left-0 right-0 h-[2px] bg-dairyRed/50" />
                   )}
                   {activeLink === item.id && (
-                    <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-[#002147]" />
+                    <div className="absolute -bottom-2 left-0 right-0 h-[2px] bg-dairyRed shadow-[0_2px_8px_rgba(200,16,46,0.5)]" />
                   )}
                 </Link>
               ))}
             </nav>
 
-            {/* Actions */}
             <div className="flex items-center gap-5">
-              {/* Contact Icon */}
-              <button onClick={() => setIsContactOpen(true)} className="hidden sm:flex text-gray-400 hover:text-[#002147] transition-colors">
+              <button onClick={() => setIsContactOpen(true)} className="hidden sm:flex text-dairyBlack hover:text-dairyRed transition-colors">
                 <PhoneCall size={20} />
               </button>
 
-              {/* User/Auth */}
               {isAuthenticated ? (
-                <Link to={user?.role === 'admin' ? '/admin' : '/history'} className="text-gray-400 hover:text-[#002147] transition-colors">
+                <Link to={user?.role === 'admin' ? '/admin' : '/history'} className="text-dairyBlack hover:text-dairyRed transition-colors">
                   <User size={22} />
                 </Link>
               ) : (
-                <Link to="/login" className="hidden sm:block text-sm font-bold text-[#002147] hover:text-[#E2B254] transition-colors uppercase tracking-wider">
+                <Link to="/login" className="hidden sm:block text-sm font-bold text-dairyBlack hover:text-dairyRed transition-colors uppercase tracking-wider">
                   Login
                 </Link>
               )}
 
-              {/* Cart Drawer Toggle */}
-              <button onClick={() => setIsCartOpen(true)} className="relative text-gray-400 hover:text-[#002147] transition-colors p-1">
+              <button onClick={() => setIsCartOpen(true)} className="relative text-dairyBlack hover:text-dairyRed transition-colors p-1">
                 <ShoppingCart size={24} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#E2B254] text-[#002147] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                  <span className="absolute -top-1 -right-1 bg-dairyRed text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-redGlow">
                     {cartCount}
                   </span>
                 )}
               </button>
 
-              {/* Mobile Menu Toggle */}
-              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-[#002147]">
+              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-dairyBlack">
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>

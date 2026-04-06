@@ -8,27 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        creamBg: "#F9F6F0",
-        dairyMaroon: "#a80000",
-        dairyGold: "#E2B254",
+        // Strict Professional Palette
+        dairyRed: "#C8102E",    // Professional True Red for Accents/Buttons
+        dairyBlack: "#1A1A1A",  // Deep black for all text
       },
       fontFamily: {
         fraunces: ["Fraunces", "serif"],
         dmsans: ["DM Sans", "sans-serif"],
       },
       boxShadow: {
-        'premium': '0 20px 40px -10px rgba(128, 0, 0, 0.1)',
-        'gold': '0 10px 25px -5px rgba(226, 178, 84, 0.3)',
-        'maroon': '0 10px 25px -5px rgba(128, 0, 0, 0.2)',
-      },
-      animation: {
-        'slow-zoom': 'slowZoom 20s ease-out infinite alternate',
-      },
-      keyframes: {
-        slowZoom: {
-          '0%': { transform: 'scale(1)' },
-          '100%': { transform: 'scale(1.15)' },
-        }
+        'premium': '0 20px 40px -10px rgba(0, 0, 0, 0.1)', 
+        'redGlow': '0 10px 25px -5px rgba(200, 16, 46, 0.3)', 
       }
     },
   },
