@@ -6,11 +6,17 @@ import {
   registerUser as apiRegisterUser
 } from '../services/auth';
 
-// 1. Create Context
-const AuthContext = createContext();
+// 1. FIXED: Added 'export' so useAuth.js can find it
+export const AuthContext = createContext();
 
 // 2. Custom Hook for easy access
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
 // 3. Provider Component
 export const AuthProvider = ({ children }) => {
@@ -19,27 +25,30 @@ export const AuthProvider = ({ children }) => {
 
   // --- HYDRATION: Check for active session on page load ---
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('sitaRamUser');
-      const token = localStorage.getItem('sitaRamToken');
-      
-      if (savedUser && token) {
-        setUser(JSON.parse(savedUser));
+    const hydrateAuth = () => {
+      try {
+        const savedUser = localStorage.getItem('sitaRamUser');
+        const token = localStorage.getItem('sitaRamToken');
+        
+        if (savedUser && token) {
+          setUser(JSON.parse(savedUser));
+        }
+      } catch (error) {
+        console.error("Failed to parse user from local storage", error);
+        localStorage.removeItem('sitaRamUser');
+        localStorage.removeItem('sitaRamToken');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Failed to parse user from local storage", error);
-      localStorage.removeItem('sitaRamUser');
-      localStorage.removeItem('sitaRamToken');
-    } finally {
-      setLoading(false);
-    }
+    };
+
+    hydrateAuth();
   }, []);
 
   // --- LOGIN LOGIC ---
   const login = async (email, password) => {
     try {
       // 1. EXCLUSIVE ADMIN OVERRIDE
-      // Bypasses the database to guarantee the Admin can always log in
       if (email === 'adminsitaram@gmail.com' && password === 'adminPASSWORD@') {
         const adminUser = { 
           id: 999, 
@@ -49,27 +58,22 @@ export const AuthProvider = ({ children }) => {
         };
         const adminToken = 'admin-secure-token-999';
         
-        // Save to Local Storage
         localStorage.setItem('sitaRamUser', JSON.stringify(adminUser));
         localStorage.setItem('sitaRamToken', adminToken);
         
-        // Instantly Update Global State
         setUser(adminUser);
         return { success: true, role: 'admin' };
       }
 
       // 2. STANDARD CUSTOMER LOGIN
-      // Talks to backend/api/auth/login.php
       const data = await apiLoginUser({ email, password });
       
-      if (data && data.success && data.user) {
-        // Save to Local Storage
+      if (data?.success && data?.user) {
         localStorage.setItem('sitaRamUser', JSON.stringify(data.user));
         if (data.token) {
           localStorage.setItem('sitaRamToken', data.token);
         }
         
-        // Instantly Update Global State
         setUser(data.user);
         return { success: true, role: data.user.role };
       }
@@ -90,8 +94,7 @@ export const AuthProvider = ({ children }) => {
   // --- REGISTRATION LOGIC ---
   const register = async (userData) => {
     try {
-      const response = await apiRegisterUser(userData);
-      return response;
+      return await apiRegisterUser(userData);
     } catch (error) {
       return { 
         success: false, 
@@ -103,36 +106,29 @@ export const AuthProvider = ({ children }) => {
   // --- LOGOUT LOGIC ---
   const logout = async () => {
     try {
-      // Attempt to invalidate session on backend if API supports it
       await apiLogoutUser();
     } catch (e) {
       console.warn("Backend logout failed, forcing local logout.");
     } finally {
-      // 1. Wipe Global State
       setUser(null);
-      
-      // 2. Wipe Local Storage Tokens
       localStorage.removeItem('sitaRamUser');
       localStorage.removeItem('sitaRamToken');
-      
-      // 3. Clear Cart Data (Ensures the next user starts with 0 items)
       localStorage.removeItem('sitaRamCart');
       localStorage.removeItem('cartItems');
     }
   };
 
-  // --- RENDER ---
-  // Provide state and actions to the rest of the application
+  const value = {
+    user,
+    login,
+    logout,
+    register,
+    loading,
+    isAuthenticated: !!user
+  };
+
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      logout, 
-      register, 
-      loading, 
-      isAuthenticated: !!user 
-    }}>
-      {/* Wait for local storage hydration before rendering children */}
+    <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
   );
