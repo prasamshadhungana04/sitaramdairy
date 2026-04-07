@@ -9,25 +9,25 @@ const HeroSlider = () => {
     const slides = [
     {
       id: 1,
-      title: "Pure Organic Milk",
+      title: "Pure Organic GHEE",
       subtitle: "Fresh from our happy cows",
-      description: "Farm-fresh, A2 organic milk delivered to your door every morning.",
+      description: "Slow-churned, aromatic golden ghee. Rich in nutrients and pure taste..",
       image: "/hero_1.png", // Image 1
-      buttonText: "Shop Now"
+      buttonText: "Explore Ghee"
     },
     {
       id: 2,
-      title: "Artisanal Ghee",
-      subtitle: "Traditional Bilona Method",
-      description: "Slow-churned, aromatic golden ghee. Rich in nutrients and pure taste.",
+      title: "Energy Fresh Drink",
+      subtitle: "Traditional model Method",
+      description: "Farm-fresh, A2 organic ghee to elevate your food taste.",
       image: "/hero_2.png", // Image 2
-      buttonText: "Explore Ghee"
+      buttonText: "shop Now"
     },
     {
       id: 3,
       title: "Fresh Dairy Products",
       subtitle: "Straight from nature",
-      description: "Experience the true taste of purity with our wide range of organic dairy products.",
+      description: "Experience the true taste of purity with our wide range of organic dairy lassi.",
       image: "/hero_3.png", // Image 3
       buttonText: "View Collection"
     }

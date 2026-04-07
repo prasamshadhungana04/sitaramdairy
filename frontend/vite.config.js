@@ -9,14 +9,16 @@ export default defineConfig({
     proxy: {
       // Proxies frontend API calls to your XAMPP backend
       '/api': {
-        target: 'http://localhost/backend', 
+        // FIXED: Pointing exactly to your XAMPP folder
+        target: 'http://localhost/sita-ram-dairy/backend', 
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
       // Proxies dynamic image uploads to XAMPP
       '/uploads': {
-        target: 'http://localhost/backend',
+        // FIXED: Pointing exactly to your XAMPP folder
+        target: 'http://localhost/sita-ram-dairy/backend',
         changeOrigin: true,
       }
     },

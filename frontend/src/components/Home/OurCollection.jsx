@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useCart } from "../../context/CartContext"; // Import the cart context
 
 const OurCollection = () => {
   const [hoveredId, setHoveredId] = useState(null);
+  const { addToCart } = useCart(); // Initialize cart function
 
+  // Note: Prices must be numbers so the Cart math works! 
+  // We separate the unit out to display it visually.
   const collections = [
     {
       id: 1,
@@ -11,7 +15,8 @@ const OurCollection = () => {
       title: "Premium Ghee",
       subtitle: "Traditional Bilona Style",
       image: "/ghee.png",
-      price: "Rs. 950/L",
+      price: 950,
+      unit: "/ L",
       badge: "NATURAL ENERGY",
     },
     {
@@ -20,7 +25,8 @@ const OurCollection = () => {
       title: "Processed Butter",
       subtitle: "Creamy & Himalayan Fresh",
       image: "/butter.png",
-      price: "Rs. 250/200g",
+      price: 250,
+      unit: "/ 200g",
       badge: "BESTSELLER",
     },
     {
@@ -29,7 +35,8 @@ const OurCollection = () => {
       title: "Sita Ram Dahi",
       subtitle: "Pure Thick Yogurt",
       image: "/dahi.png",
-      price: "Rs. 120/500g",
+      price: 120,
+      unit: "/ 500g",
       badge: "SUGAR FREE",
     },
     {
@@ -38,7 +45,8 @@ const OurCollection = () => {
       title: "Fresh Paneer",
       subtitle: "Soft & Vacuum Packed",
       image: "/paneer.png",
-      price: "Rs. 380/500g",
+      price: 380,
+      unit: "/ 500g",
       badge: "NEW",
     },
     {
@@ -47,7 +55,8 @@ const OurCollection = () => {
       title: "Strawberry Lassi",
       subtitle: "Real Fruit Fusion",
       image: "/strawberrylassi.png",
-      price: "Rs. 60/200ml",
+      price: 60,
+      unit: "/ 200ml",
       badge: "FRUITY",
     },
     {
@@ -56,7 +65,8 @@ const OurCollection = () => {
       title: "Keshar Milk",
       subtitle: "Saffron Infused Low Fat",
       image: "/kesharmilk.png",
-      price: "Rs. 80/200ml",
+      price: 80,
+      unit: "/ 200ml",
       badge: "FRESH",
     },
     {
@@ -65,7 +75,8 @@ const OurCollection = () => {
       title: "Sweet Lassi",
       subtitle: "Calcium & Protein Source",
       image: "/lassi.png",
-      price: "Rs. 50/200ml",
+      price: 50,
+      unit: "/ 200ml",
       badge: "CLASSIC",
     },
     {
@@ -74,7 +85,8 @@ const OurCollection = () => {
       title: "Medium Dahi",
       subtitle: "Pure Milk Curd",
       image: "/medium_dahi.png",
-      price: "Rs. 80/250g",
+      price: 80,
+      unit: "/ 250g",
       badge: "CREAMY",
     },
   ];
@@ -94,18 +106,18 @@ const OurCollection = () => {
   };
 
   return (
-    <section className="py-24 bg-cheeseCream relative overflow-hidden">
+    <section className="py-24 bg-[#FDF8E7] relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ y: [0, 40, 0], scale: [1, 1.2, 1] }}
           transition={{ duration: 8, repeat: Infinity }}
-          className="absolute -top-20 -left-20 w-96 h-96 bg-dairyRed/5 rounded-full blur-[80px]"
+          className="absolute -top-20 -left-20 w-96 h-96 bg-[#9e111a]/5 rounded-full blur-[80px]"
         />
         <motion.div
           animate={{ y: [0, -40, 0], scale: [1, 1.1, 1] }}
           transition={{ duration: 10, repeat: Infinity, delay: 1 }}
-          className="absolute bottom-10 -right-20 w-[30rem] h-[30rem] bg-dairyRed/5 rounded-full blur-[100px]"
+          className="absolute bottom-10 -right-20 w-[30rem] h-[30rem] bg-[#9e111a]/5 rounded-full blur-[100px]"
         />
       </div>
 
@@ -114,17 +126,18 @@ const OurCollection = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-dairyRed text-sm uppercase tracking-[0.3em] font-bold mb-4">
+          <h2 className="text-[#9e111a] text-sm uppercase tracking-[0.3em] font-bold mb-4">
             Our Collection
           </h2>
 
-          <h3 className="text-5xl md:text-6xl font-serif font-extrabold text-dairyBlack mb-6">
-            Premium Dairy <span className="text-dairyRed">Selection</span>
+          <h3 className="text-5xl md:text-6xl font-serif font-extrabold text-[#1A1A1A] mb-6 drop-shadow-sm">
+            Premium Dairy <span className="text-[#9e111a]">Selection</span>
           </h3>
 
-          <div className="w-24 h-1 bg-dairyRed mx-auto rounded-full" />
+          <div className="w-24 h-1 bg-[#9e111a] mx-auto rounded-full" />
         </motion.div>
 
         {/* Cards */}
@@ -132,6 +145,7 @@ const OurCollection = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {collections.map((item) => (
@@ -142,44 +156,51 @@ const OurCollection = () => {
               onMouseLeave={() => setHoveredId(null)}
               className="group relative cursor-pointer"
             >
-              <div className="bg-[#FFFCF5] rounded-2xl overflow-hidden shadow-lg border border-dairyRed/10 hover:shadow-premium transition-all duration-500 flex flex-col h-full">
+              <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-500 flex flex-col h-full z-10 relative">
                 
                 {/* Image */}
                 <div className="relative h-64 overflow-hidden bg-white">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-dairyRed/20 to-transparent opacity-0 group-hover:opacity-100 transition" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#9e111a]/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
 
-                  <span className="absolute top-4 right-4 bg-dairyRed text-white px-3 py-1 text-[10px] font-bold rounded shadow-lg">
+                  <span className="absolute top-4 right-4 bg-[#9e111a] text-white px-3 py-1 text-[10px] font-black tracking-widest rounded uppercase shadow-md">
                     {item.badge}
                   </span>
                 </div>
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-grow text-center">
-                  <p className="text-dairyRed text-[10px] font-bold uppercase mb-2 tracking-widest">
+                  <p className="text-[#9e111a] text-[10px] font-black uppercase mb-2 tracking-widest">
                     {item.name}
                   </p>
 
-                  <h4 className="text-xl font-serif font-bold text-dairyBlack mb-1">
+                  <h4 className="text-xl font-serif font-bold text-[#1A1A1A] mb-1">
                     {item.title}
                   </h4>
 
-                  <p className="text-gray-500 text-xs mb-4">
+                  <p className="text-gray-500 font-medium text-xs mb-4">
                     {item.subtitle}
                   </p>
 
-                  <div className="mt-auto pt-4 border-t border-dairyRed/10 flex justify-between items-center">
-                    <span className="text-lg font-bold text-dairyRed">
-                      {item.price}
+                  <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+                    <span className="text-lg font-black text-[#1A1A1A]">
+                      NPR {item.price}<span className="text-xs text-gray-400 font-bold ml-1">{item.unit}</span>
                     </span>
 
-                    <button className="bg-dairyRed text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-dairyBlack transition-colors shadow-md">
-                      Add to Cart
+                    {/* WIRED UP ADD TO CART BUTTON */}
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents triggering any parent links/modals
+                        if(addToCart) addToCart(item); // Safely adds the item to context
+                      }}
+                      className="bg-[#9e111a] text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[#1A1A1A] transition-colors shadow-md hover:shadow-xl"
+                    >
+                      Add +
                     </button>
                   </div>
                 </div>
@@ -187,7 +208,7 @@ const OurCollection = () => {
 
               {/* Hover Glow */}
               <div
-                className={`absolute -bottom-4 left-4 right-4 h-8 bg-dairyRed/20 rounded-full blur-xl transition-all duration-500 ${
+                className={`absolute -bottom-4 left-4 right-4 h-8 bg-[#9e111a]/20 rounded-full blur-xl transition-all duration-500 z-0 ${
                   hoveredId === item.id ? "opacity-100 scale-100" : "opacity-0 scale-75"
                 }`}
               />

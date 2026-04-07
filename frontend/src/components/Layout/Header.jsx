@@ -1,8 +1,8 @@
 // frontend/src/components/Layout/Header.jsx
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingCart, User, PhoneCall, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, PhoneCall, Menu, X, LogOut } from 'lucide-react'; 
 import ContactModal from '../ContactModal';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -13,9 +13,12 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
-  const { cartItems } = useCart();
-  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate(); // ADDED: For smooth routing
   const location = useLocation();
+
+  // MODIFIED: Pull clearCart and logout directly from your new Contexts
+  const { cartItems, clearCart } = useCart();
+  const { user, isAuthenticated, logout } = useAuth(); 
   
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const activeLink = location.pathname === '/' ? 'home' : location.pathname.slice(1);
@@ -29,6 +32,13 @@ const Header = () => {
     { id: 'notices', label: 'Farm Updates', path: '/notices' },
   ];
 
+  // MODIFIED: Uses Context to instantly update UI across the whole app
+  const handleLogout = async () => {
+    await logout();      // Wipes user context and tokens instantly
+    if (clearCart) clearCart(); // Wipes cart context instantly
+    navigate('/login');  // Smooth transition to login page
+  };
+
   return (
     <>
       {/* 3D FROSTED GLASS HEADER */}
@@ -37,7 +47,6 @@ const Header = () => {
           <div className="flex justify-between items-center">
             
             <Link to="/" className="flex items-center gap-3 group">
-              {/* Replaced SR badge with logo.png */}
               <img 
                 src="/logo.png" 
                 alt="Sita Ram Organic Dairy Logo" 
@@ -79,10 +88,24 @@ const Header = () => {
                 <PhoneCall size={20} />
               </button>
 
+              {/* AUTHENTICATION ICONS */}
               {isAuthenticated ? (
-                <Link to={user?.role === 'admin' ? '/admin' : '/history'} className="text-dairyBlack hover:text-dairyRed transition-colors">
-                  <User size={22} />
-                </Link>
+                <div className="flex items-center gap-4">
+                  <Link 
+                    to={user?.role === 'admin' ? '/admin' : '/history'} 
+                    className="text-dairyBlack hover:text-dairyRed transition-colors"
+                    title="Dashboard/Profile"
+                  >
+                    <User size={22} />
+                  </Link>
+                  <button 
+                    onClick={handleLogout} 
+                    className="text-dairyBlack hover:text-dairyRed transition-colors"
+                    title="Logout"
+                  >
+                    <LogOut size={22} />
+                  </button>
+                </div>
               ) : (
                 <Link to="/login" className="hidden sm:block text-sm font-bold text-dairyBlack hover:text-dairyRed transition-colors uppercase tracking-wider">
                   Login

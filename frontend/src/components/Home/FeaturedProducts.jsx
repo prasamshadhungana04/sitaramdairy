@@ -13,15 +13,14 @@ const FeaturedProducts = () => {
     category: i % 2 === 0 ? "Milk" : "Ghee",
     price: i % 2 === 0 ? 130 : 1200,
     oldPrice: i % 2 === 0 ? 150 : 1400,
-    // Using high-quality transparent PNGs or clean backgrounds for a 3D effect
     image: i % 2 === 0 
-      ? "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80" 
-      : "https://images.unsplash.com/photo-1601314101416-3687edec84b3?w=400&q=80",
+      ? "/milk.png" 
+      : "/ghee.png",
     badge: i === 0 ? "Top Seller" : i === 2 ? "New" : null
   }));
 
   return (
-    <section className="py-20 bg-[#F9F6F0] relative">
+    <section className="py-20 bg-[#FDF8E7] relative">
       {/* Background Flowing Milk Effect */}
       <div className="absolute inset-0 opacity-40 pointer-events-none overflow-hidden">
          <motion.div 
@@ -34,29 +33,29 @@ const FeaturedProducts = () => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h2 className="text-[#E2B254] text-sm font-bold uppercase tracking-widest mb-2">Shop Our Farm</h2>
-            <h3 className="text-3xl md:text-4xl font-serif font-bold text-[#002147]">Just For You</h3>
+            <h2 className="text-[#9e111a] text-sm font-bold uppercase tracking-widest mb-2">Shop Our Farm</h2>
+            <h3 className="text-3xl md:text-4xl font-serif font-bold text-[#1A1A1A]">Just For You</h3>
           </div>
-          <button className="text-[#002147] font-bold hover:text-[#E2B254] transition-colors hidden sm:block border-b-2 border-[#002147] hover:border-[#E2B254] pb-1">
+          <button className="text-[#1A1A1A] font-bold hover:text-[#9e111a] transition-colors hidden sm:block border-b-2 border-[#1A1A1A] hover:border-[#9e111a] pb-1">
             View All Catalog
           </button>
         </div>
 
-        {/* Daraz-Style Dense Grid: 2 cols on mobile, up to 5 on large desktops */}
+        {/* Dense Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-5">
           {products.map((product) => (
             <motion.div
               key={product.id}
               whileHover={{ y: -5 }}
-              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-[0_20px_40px_rgba(0,33,71,0.08)] transition-all duration-300 border border-gray-100 flex flex-col h-full relative"
+              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full relative"
             >
               {product.badge && (
-                <div className="absolute top-3 left-3 z-20 bg-[#E2B254] text-[#002147] text-[10px] sm:text-xs font-bold px-2 py-1 rounded shadow-md uppercase">
+                <div className="absolute top-3 left-3 z-20 bg-[#9e111a] text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded shadow-md uppercase">
                   {product.badge}
                 </div>
               )}
               
-              <div className="relative aspect-square overflow-hidden bg-gray-50 p-4 flex items-center justify-center">
+              <div className="relative aspect-square overflow-hidden bg-[#FDF8E7]/50 p-4 flex items-center justify-center">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -65,26 +64,30 @@ const FeaturedProducts = () => {
               </div>
 
               <div className="p-4 flex flex-col flex-grow">
-                <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider mb-1">{product.category}</p>
-                <h4 className="text-sm sm:text-base font-bold text-[#002147] leading-tight mb-2 line-clamp-2">
+                <p className="text-[10px] sm:text-xs text-[#9e111a] font-black uppercase tracking-wider mb-1">{product.category}</p>
+                <h4 className="text-sm sm:text-base font-bold text-[#1A1A1A] leading-tight mb-2 line-clamp-2">
                   {product.name}
                 </h4>
                 
                 <div className="mt-auto">
                   <div className="flex items-baseline gap-2 mb-3">
-                    <span className="text-lg sm:text-xl font-bold text-[#E2B254]">
-                      Rs. {product.price}
+                    <span className="text-lg sm:text-xl font-black text-[#1A1A1A]">
+                      NPR {product.price}
                     </span>
                     {product.oldPrice && (
-                      <span className="text-xs text-gray-400 line-through">
-                        Rs. {product.oldPrice}
+                      <span className="text-xs text-gray-400 line-through font-bold">
+                        NPR {product.oldPrice}
                       </span>
                     )}
                   </div>
                   
+                  {/* Wired up properly to avoid navigation bubbling */}
                   <button 
-                    onClick={() => addToCart(product)}
-                    className="w-full bg-gray-50 text-[#002147] border border-gray-200 py-2 sm:py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 group-hover:bg-[#002147] group-hover:text-white transition-colors duration-300"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if(addToCart) addToCart(product);
+                    }}
+                    className="w-full bg-[#FDF8E7] text-[#9e111a] border border-[#9e111a]/20 py-2 sm:py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 group-hover:bg-[#9e111a] group-hover:text-white transition-colors duration-300"
                   >
                     <ShoppingCart size={16} />
                     <span>Add to Cart</span>

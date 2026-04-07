@@ -20,7 +20,7 @@ export default function ContactModal({ isOpen, onClose }) {
     e.preventDefault();
     console.log('Contact form submitted:', formData);
     setSubmitted(true);
-    // Reset form after 3 seconds and close
+    // Reset form after 2 seconds and close
     setTimeout(() => {
       setSubmitted(false);
       onClose();
@@ -82,7 +82,8 @@ export default function ContactModal({ isOpen, onClose }) {
                           onChange={handleChange}
                           required
                           className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-colors text-sm"
-                          placeholder="John Doe"
+                          /* UPDATED: Informative instruction placeholder */
+                          placeholder="Enter your name"
                         />
                       </div>
                     </div>
@@ -118,7 +119,8 @@ export default function ContactModal({ isOpen, onClose }) {
                         onChange={handleChange}
                         required
                         className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-colors text-sm"
-                        placeholder="you@example.com"
+                        /* UPDATED: Informative instruction placeholder */
+                        placeholder="Enter your email address"
                       />
                     </div>
                   </div>

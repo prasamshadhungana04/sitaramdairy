@@ -32,11 +32,19 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const originalRequest = error.config;
+    
+    // FIXED: Only redirect if it's a 401 AND we are NOT trying to log in.
+    // If we are logging in, let the login page handle the error so it shows the red text!
+    if (error.response?.status === 401 && !originalRequest.url.includes('login.php')) {
       console.warn("Session expired. Redirecting to login...");
       localStorage.removeItem('sitaRamUser');
       localStorage.removeItem('sitaRamToken');
-      window.location.href = '/login';
+      
+      // Only force refresh if they aren't already on the login page
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

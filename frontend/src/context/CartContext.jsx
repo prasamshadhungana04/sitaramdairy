@@ -10,6 +10,7 @@ export const CartProvider = ({ children }) => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
+  // Sync to local storage whenever cart updates
   useEffect(() => {
     localStorage.setItem('sitaRamCart', JSON.stringify(cartItems));
   }, [cartItems]);
@@ -37,11 +38,24 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  // Allows AuthContext / Header to instantly empty the cart upon logout
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('sitaRamCart');
+  };
+
   // Ensure price is treated as a number for accurate subtotal calculation
-  const cartTotal = cartItems.reduce((sum, item) => sum + (Number(item.price_npr) * item.quantity), 0);
+  const cartTotal = cartItems.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, cartTotal }}>
+    <CartContext.Provider value={{ 
+      cartItems, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      clearCart, 
+      cartTotal 
+    }}>
       {children}
     </CartContext.Provider>
   );

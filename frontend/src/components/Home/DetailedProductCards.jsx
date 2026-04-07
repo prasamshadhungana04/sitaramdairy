@@ -1,7 +1,12 @@
 // frontend/src/components/Home/DetailedProductCards.jsx
 import { ShoppingCart, Leaf, ShieldCheck } from 'lucide-react';
+// IMPORT THE CART HOOK
+import { useCart } from '../../context/CartContext';
 
 const DetailedProductCards = () => {
+  // Initialize context
+  const { addToCart } = useCart();
+
   const products = [
     {
       id: 1,
@@ -66,11 +71,11 @@ const DetailedProductCards = () => {
   ];
 
   return (
-    <section className="py-24 bg-cheeseCream overflow-hidden">
+    <section className="py-24 bg-[#FDF8E7] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 space-y-4">
-          <h2 className="text-dairyRed text-sm font-bold uppercase tracking-[0.4em]">Our Collection</h2>
-          <h3 className="text-5xl font-serif font-bold text-dairyBlack">Carefully Crafted <br/> Dairy Essentials</h3>
+          <h2 className="text-[#9e111a] text-sm font-bold uppercase tracking-[0.4em]">Our Collection</h2>
+          <h3 className="text-5xl font-serif font-bold text-[#1A1A1A]">Carefully Crafted <br/> Dairy Essentials</h3>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -82,7 +87,7 @@ const DetailedProductCards = () => {
               <div className="relative h-full w-full transition-transform duration-1000 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                 
                 {/* ================= FRONT OF CARD ================= */}
-                <div className="absolute inset-0 h-full w-full bg-white rounded-[2.5rem] p-6 shadow-md flex flex-col [backface-visibility:hidden]">
+                <div className="absolute inset-0 h-full w-full bg-white rounded-[2.5rem] p-6 shadow-md flex flex-col [backface-visibility:hidden] border border-gray-100">
                   <div className="relative aspect-square mb-6 overflow-hidden rounded-[2rem] bg-white border border-gray-50">
                     <img 
                       src={product.image} 
@@ -93,8 +98,8 @@ const DetailedProductCards = () => {
 
                   <div className="flex-grow space-y-2">
                     <div className="flex justify-between items-start">
-                      <h3 className="text-xl font-serif font-bold text-dairyBlack">{product.name}</h3>
-                      <span className="text-sm font-bold text-dairyRed">NPR {product.price}</span>
+                      <h3 className="text-xl font-serif font-bold text-[#1A1A1A]">{product.name}</h3>
+                      <span className="text-sm font-bold text-[#9e111a]">NPR {product.price}</span>
                     </div>
                     <p className="text-gray-500 text-sm line-clamp-2">{product.desc}</p>
                   </div>
@@ -105,23 +110,23 @@ const DetailedProductCards = () => {
                 </div>
 
                 {/* ================= BACK OF CARD ================= */}
-                <div className="absolute inset-0 h-full w-full bg-dairyBlack rounded-[2.5rem] p-8 shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col border border-white/10">
+                <div className="absolute inset-0 h-full w-full bg-[#1A1A1A] rounded-[2.5rem] p-8 shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col border border-white/10">
                   
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-serif font-bold text-white mb-2">{product.name}</h3>
-                    <div className="w-12 h-1 bg-dairyRed mx-auto rounded-full" />
+                    <div className="w-12 h-1 bg-[#9e111a] mx-auto rounded-full" />
                   </div>
 
                   <div className="space-y-6 flex-grow">
                     {/* Ingredients Section */}
                     <div>
-                      <h4 className="flex items-center gap-2 text-dairyRed text-xs font-bold uppercase tracking-widest mb-3">
+                      <h4 className="flex items-center gap-2 text-[#9e111a] text-xs font-bold uppercase tracking-widest mb-3">
                         <Leaf size={14} /> Ingredients
                       </h4>
                       <ul className="space-y-2">
                         {product.ingredients.map((ing, i) => (
                           <li key={i} className="text-gray-300 text-sm flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-dairyRed shrink-0" /> {ing}
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#9e111a] shrink-0" /> {ing}
                           </li>
                         ))}
                       </ul>
@@ -129,7 +134,7 @@ const DetailedProductCards = () => {
 
                     {/* Nutrition Section */}
                     <div>
-                      <h4 className="flex items-center gap-2 text-dairyRed text-xs font-bold uppercase tracking-widest mb-3">
+                      <h4 className="flex items-center gap-2 text-[#9e111a] text-xs font-bold uppercase tracking-widest mb-3">
                         <ShieldCheck size={14} /> Nutrition Fact
                       </h4>
                       <p className="text-gray-300 text-sm leading-relaxed">
@@ -138,8 +143,14 @@ const DetailedProductCards = () => {
                     </div>
                   </div>
 
-                  {/* Add to Cart Button */}
-                  <button className="w-full py-4 bg-dairyRed text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-white hover:text-dairyBlack transition-all duration-300 mt-auto shadow-lg">
+                  {/* REAL Add to Cart Button */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevents clicking the button from bubbling up
+                      if(addToCart) addToCart(product);
+                    }}
+                    className="w-full py-4 bg-[#9e111a] text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-white hover:text-[#1A1A1A] transition-all duration-300 mt-auto shadow-lg z-10 relative"
+                  >
                     <ShoppingCart size={18} /> Add to Cart — NPR {product.price}
                   </button>
                   

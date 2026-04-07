@@ -1,7 +1,7 @@
 // frontend/src/admin/ProductManagement.jsx
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Edit, Trash2, Plus, AlertCircle, CheckCircle2, Package, Search } from 'lucide-react';
+import { Edit, Trash2, Plus, Package } from 'lucide-react';
 
 export default function ProductManagement() {
   const [products, setProducts] = useState([]);
@@ -9,39 +9,28 @@ export default function ProductManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   
-  // Form State
   const [formData, setFormData] = useState({ 
-    name: '', 
-    category: 'Milk', 
-    price_npr: '', 
-    stock_quantity: '', 
-    description: '' 
+    name: '', category: 'Milk', price_npr: '', stock_quantity: '', description: '',
+    subtitle: '', badge: '', unit: '', ingredients: '', nutrition: ''
   });
   const [imageFile, setImageFile] = useState(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  useEffect(() => { fetchProducts(); }, []);
 
   const fetchProducts = async () => {
     try {
       const res = await api.get('/products/index.php');
-      setProducts(res.data);
-    } catch (error) {
-      console.error("Failed to fetch products", error);
-    } finally {
-      setLoading(false);
-    }
+      setProducts(res.data || []);
+    } catch (error) { console.error("Failed to fetch products"); } 
+    finally { setLoading(false); }
   };
 
   const handleDelete = async (id) => {
-    if(window.confirm("Are you sure you want to delete this premium product?")) {
+    if(window.confirm("Delete this product?")) {
       try {
         await api.get(`/admin/products/delete.php?id=${id}`);
         setProducts(products.filter(p => p.id !== id));
-      } catch (error) {
-        alert("Deletion failed.");
-      }
+      } catch (error) { alert("Deletion failed."); }
     }
   };
 
@@ -53,237 +42,123 @@ export default function ProductManagement() {
     if (editingId) data.append('id', editingId);
 
     try {
-      const endpoint = editingId ? '/admin/products/update.php' : '/products/upload.php';
+      const endpoint = editingId ? '/admin/products/update.php' : '/admin/products/create.php';
       await api.post(endpoint, data);
       setIsModalOpen(false);
-      setEditingId(null);
       fetchProducts(); 
-    } catch (error) {
-      console.error("Upload failed", error);
-    }
+    } catch (error) { console.error("Upload failed", error); }
   };
 
   const openEditModal = (product) => {
     setEditingId(product.id);
+    setImageFile(null);
     setFormData({ 
-      name: product.name, 
-      category: product.category, 
-      price_npr: product.price_npr, 
-      stock_quantity: product.stock_quantity, 
-      description: product.description 
+      name: product.name || '', category: product.category || 'Milk', price_npr: product.price_npr || '', 
+      stock_quantity: product.stock_quantity || '', description: product.description || '',
+      subtitle: product.subtitle || '', badge: product.badge || '', unit: product.unit || '', 
+      ingredients: product.ingredients || '', nutrition: product.nutrition || ''
     });
     setIsModalOpen(true);
   };
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="bg-white rounded-[2rem] shadow-premium border border-gray-100 p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-serif font-bold text-dairyRed red-text-shadow flex items-center gap-3">
-            <Package size={28} /> Inventory Catalog
-          </h2>
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">
-            Manage your premium organic dairy stock
-          </p>
+          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2"><Package size={22} /> Inventory</h2>
+          <p className="text-sm text-slate-500 mt-1">Manage catalog and stock</p>
         </div>
         <button 
-          onClick={() => { 
-            setEditingId(null); 
-            setFormData({ name: '', category: 'Milk', price_npr: '', stock_quantity: '', description: '' }); 
-            setIsModalOpen(true); 
-          }}
-          className="bg-dairyRed text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-dairyBlack transition-all duration-300 flex items-center gap-2 shadow-redGlow"
+          onClick={() => { setEditingId(null); setImageFile(null); setFormData({ name: '', category: 'Milk', price_npr: '', stock_quantity: '', description: '', subtitle: '', badge: '', unit: '', ingredients: '', nutrition: '' }); setIsModalOpen(true); }}
+          className="bg-indigo-600 text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-indigo-700 transition-colors flex items-center gap-2"
         >
-          <Plus size={18} strokeWidth={3} /> Add New Product
+          <Plus size={18} /> Add Product
         </button>
       </div>
       
-      {/* Table Container */}
-      <div className="bg-white rounded-[2.5rem] shadow-premium border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-cheeseCream text-dairyBlack/60 text-[10px] uppercase tracking-[0.2em] font-black">
-                <th className="p-6">Product Image & Name</th>
-                <th className="p-6">Category</th>
-                <th className="p-6">Price</th>
-                <th className="p-6">Stock Status</th>
-                <th className="p-6 text-right">Actions</th>
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-semibold border-b border-slate-200">
+              <th className="p-5">Product</th>
+              <th className="p-5">Category</th>
+              <th className="p-5">Price</th>
+              <th className="p-5">Stock</th>
+              <th className="p-5 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {loading ? <tr><td colSpan="5" className="p-8 text-center text-slate-500">Loading...</td></tr> : products.map(p => (
+              <tr key={p.id} className="hover:bg-slate-50 transition-colors">
+                <td className="p-5 flex items-center gap-4">
+                  <img src={p.image_url || 'https://via.placeholder.com/50'} alt={p.name} className="w-12 h-12 rounded-lg object-cover border border-slate-200" />
+                  <div>
+                    <p className="font-bold text-slate-800">{p.name}</p>
+                    <p className="text-xs text-slate-500">SKU: #{p.id}</p>
+                  </div>
+                </td>
+                <td className="p-5 text-sm text-slate-600">{p.category}</td>
+                <td className="p-5 font-bold text-slate-800">NPR {p.price_npr}</td>
+                <td className="p-5 text-sm text-slate-600">{p.stock_quantity} Units</td>
+                <td className="p-5 text-right space-x-2">
+                  <button onClick={() => openEditModal(p)} className="p-2 text-slate-400 hover:text-indigo-600 bg-slate-50 rounded-lg"><Edit size={18} /></button>
+                  <button onClick={() => handleDelete(p.id)} className="p-2 text-slate-400 hover:text-rose-600 bg-slate-50 rounded-lg"><Trash2 size={18} /></button>
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {loading ? (
-                <tr>
-                  <td colSpan="5" className="p-20 text-center">
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="w-12 h-12 border-4 border-dairyRed/20 border-t-dairyRed rounded-full animate-spin"></div>
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Accessing Ledger...</p>
-                    </div>
-                  </td>
-                </tr>
-              ) : products.map(p => (
-                <tr key={p.id} className="hover:bg-cheeseCream/30 transition-all duration-300 group">
-                  <td className="p-6 flex items-center gap-5">
-                    <div className="relative">
-                      <img 
-                        src={p.image_url || 'https://via.placeholder.com/150'} 
-                        alt={p.name} 
-                        className="w-16 h-16 rounded-2xl object-cover border-2 border-cheeseCream shadow-sm group-hover:scale-105 transition-transform" 
-                      />
-                    </div>
-                    <div>
-                      <p className="font-serif font-bold text-dairyBlack text-lg">{p.name}</p>
-                      <p className="text-[10px] font-black text-dairyRed uppercase tracking-tighter">SKU: #{p.id}</p>
-                    </div>
-                  </td>
-                  <td className="p-6 font-bold text-gray-500 text-sm">{p.category}</td>
-                  <td className="p-6 text-dairyBlack font-black text-lg">NPR {Number(p.price_npr).toLocaleString()}</td>
-                  <td className="p-6">
-                    {p.stock_quantity > 10 ? (
-                      <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black bg-green-50 text-green-700 border border-green-100 uppercase tracking-widest">
-                        <CheckCircle2 size={12}/> Healthy ({p.stock_quantity})
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black bg-dairyRed/5 text-dairyRed border border-dairyRed/10 uppercase tracking-widest">
-                        <AlertCircle size={12}/> Low Stock ({p.stock_quantity})
-                      </span>
-                    )}
-                  </td>
-                  <td className="p-6 text-right space-x-3">
-                    <button 
-                      onClick={() => openEditModal(p)} 
-                      className="p-3 text-gray-400 hover:text-dairyRed hover:bg-dairyRed/5 rounded-xl transition-all"
-                    >
-                      <Edit size={20} />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(p.id)} 
-                      className="p-3 text-gray-400 hover:text-white hover:bg-dairyRed rounded-xl transition-all"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      {/* === MODERN PREMIUM MODAL === */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-dairyBlack/60 backdrop-blur-md flex items-center justify-center z-50 p-6">
-          <form 
-            onSubmit={handleSubmit} 
-            className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-xl overflow-hidden border border-white/20"
-          >
-            <div className="p-8 border-b border-gray-100 bg-cheeseCream flex justify-between items-center">
-              <div>
-                <h3 className="text-2xl font-serif font-bold text-dairyRed red-text-shadow">
-                  {editingId ? 'Refine Product' : 'Register New Batch'}
-                </h3>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Enterprise Inventory Management</p>
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl w-full max-w-2xl my-auto">
+            <div className="p-6 border-b border-slate-100"><h3 className="text-lg font-bold text-slate-800">{editingId ? 'Edit Product' : 'New Product'}</h3></div>
+            <div className="p-6 grid grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto custom-scrollbar">
+              <div className="col-span-2 sm:col-span-1">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Name</label>
+                <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
               </div>
-              <button 
-                type="button" 
-                onClick={() => setIsModalOpen(false)} 
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-400 hover:text-dairyRed shadow-sm transition-colors"
-              >
-                ✕
-              </button>
+              <div className="col-span-2 sm:col-span-1">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Category</label>
+                <input type="text" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Price (NPR)</label>
+                <input type="number" required value={formData.price_npr} onChange={e => setFormData({...formData, price_npr: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Stock Quantity</label>
+                <input type="number" required value={formData.stock_quantity} onChange={e => setFormData({...formData, stock_quantity: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Unit (e.g., / L)</label>
+                <input type="text" value={formData.unit} onChange={e => setFormData({...formData, unit: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Badge (e.g., BESTSELLER)</label>
+                <input type="text" value={formData.badge} onChange={e => setFormData({...formData, badge: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
+              </div>
+              <div className="col-span-2">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Subtitle</label>
+                <input type="text" value={formData.subtitle} onChange={e => setFormData({...formData, subtitle: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
+              </div>
+              <div className="col-span-2">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Ingredients (comma separated)</label>
+                <input type="text" value={formData.ingredients} onChange={e => setFormData({...formData, ingredients: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none" />
+              </div>
+              <div className="col-span-2">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Nutrition Fact</label>
+                <textarea rows="2" value={formData.nutrition} onChange={e => setFormData({...formData, nutrition: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-slate-200 outline-none"></textarea>
+              </div>
+              <div className="col-span-2">
+                <label className="block text-xs font-semibold text-slate-500 mb-1">Image {editingId && "(Leave empty to keep current image)"}</label>
+                <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files[0])} className="w-full text-sm" />
+              </div>
             </div>
-
-            <div className="p-8 space-y-5 bg-white">
-              <div className="space-y-1">
-                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Product Title</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g., Pure Artisanal Ghee" 
-                  required 
-                  value={formData.name} 
-                  onChange={e => setFormData({...formData, name: e.target.value})} 
-                  className="w-full px-5 py-4 rounded-2xl bg-cheeseCream border-none focus:ring-2 focus:ring-dairyRed/20 outline-none font-bold text-dairyBlack" 
-                />
-              </div>
-
-              <div className="flex gap-5">
-                <div className="w-1/2 space-y-1">
-                  <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Price (NPR)</label>
-                  <input 
-                    type="number" 
-                    placeholder="0.00" 
-                    required 
-                    value={formData.price_npr} 
-                    onChange={e => setFormData({...formData, price_npr: e.target.value})} 
-                    className="w-full px-5 py-4 rounded-2xl bg-cheeseCream border-none focus:ring-2 focus:ring-dairyRed/20 outline-none font-bold text-dairyBlack" 
-                  />
-                </div>
-                <div className="w-1/2 space-y-1">
-                  <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Current Stock</label>
-                  <input 
-                    type="number" 
-                    placeholder="Qty" 
-                    required 
-                    value={formData.stock_quantity} 
-                    onChange={e => setFormData({...formData, stock_quantity: e.target.value})} 
-                    className="w-full px-5 py-4 rounded-2xl bg-cheeseCream border-none focus:ring-2 focus:ring-dairyRed/20 outline-none font-bold text-dairyBlack" 
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Category Selection</label>
-                <select 
-                  value={formData.category} 
-                  onChange={e => setFormData({...formData, category: e.target.value})} 
-                  className="w-full px-5 py-4 rounded-2xl bg-cheeseCream border-none focus:ring-2 focus:ring-dairyRed/20 outline-none font-bold text-dairyBlack appearance-none"
-                >
-                  <option>Milk</option>
-                  <option>Cheese</option>
-                  <option>Ghee</option>
-                  <option>Yogurt</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Brief Description</label>
-                <textarea 
-                  placeholder="Tell the story of this product..." 
-                  rows="3" 
-                  value={formData.description} 
-                  onChange={e => setFormData({...formData, description: e.target.value})} 
-                  className="w-full px-5 py-4 rounded-2xl bg-cheeseCream border-none focus:ring-2 focus:ring-dairyRed/20 outline-none font-bold text-dairyBlack resize-none"
-                ></textarea>
-              </div>
-
-              {!editingId && (
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">Product Visual</label>
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={e => setImageFile(e.target.files[0])} 
-                    className="w-full text-xs text-gray-400 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-widest file:bg-dairyRed file:text-white hover:file:bg-dairyBlack transition-all" 
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="p-8 border-t border-gray-50 bg-cheeseCream/30 flex justify-end gap-4">
-              <button 
-                type="button" 
-                onClick={() => setIsModalOpen(false)} 
-                className="px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-gray-400 hover:bg-gray-100 transition-all"
-              >
-                Discard
-              </button>
-              <button 
-                type="submit" 
-                className="px-10 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest bg-dairyRed text-white hover:bg-dairyBlack transition-all shadow-redGlow"
-              >
-                {editingId ? 'Finalize Changes' : 'Publish Product'}
-              </button>
+            <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+              <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-lg font-medium text-slate-600 hover:bg-slate-200 transition-colors">Cancel</button>
+              <button type="submit" className="px-5 py-2.5 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">Save Product</button>
             </div>
           </form>
         </div>
