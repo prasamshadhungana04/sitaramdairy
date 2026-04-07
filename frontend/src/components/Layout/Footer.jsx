@@ -53,14 +53,9 @@ const Footer = () => {
       {/* 2. Main Body Section */}
       <div className="relative bg-red-700 text-white">
         
-        {/* Background Decorative Layer */}
+        {/* Background Decorative Layer - Image Removed */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div 
-            className="absolute left-0 top-0 w-1/2 h-full opacity-5 bg-contain bg-no-repeat bg-center"
-            style={{ backgroundImage: "url('https://www.pngall.com/wp-content/uploads/15/Milk-PNG-File-Download-Free.png')" }}
-          />
-
-          {/* Liquid Edge Divider */}
+          {/* Liquid Edge Divider (Kept for subtle texture) */}
           <div className="hidden lg:block absolute top-0 left-[43%] w-[250px] h-full z-10 translate-x-[-50%]">
              <svg viewBox="0 0 200 800" preserveAspectRatio="none" className="h-full w-full fill-white/5 opacity-30">
                 <path d="M0,0 L60,0 C140,80 20,160 150,240 C190,280 40,360 170,440 C220,520 30,600 140,680 C180,740 60,800 100,800 L0,800 Z" />
@@ -72,17 +67,22 @@ const Footer = () => {
         <div className="relative z-20 max-w-7xl mx-auto px-6 py-12 md:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
             
-            {/* Brand Column - Image removed */}
+            {/* Brand Column */}
             <div className="lg:col-span-5 space-y-6">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-white text-red-700 rounded-full flex items-center justify-center font-bold text-2xl shadow-lg border-2 border-red-600/20">
-                  SR
+                {/* Logo Image */}
+                <div className="bg-white p-1 rounded-xl shadow-lg">
+                  <img 
+                    src="/logo.png" 
+                    alt="Sita Ram Dairy Logo" 
+                    className="w-16 h-16 object-contain"
+                  />
                 </div>
                 <div>
                   <h3 className="text-2xl font-serif font-bold tracking-tight">
                     Sita Ram <span className="text-red-200">Dairy</span>
                   </h3>
-                  <p className="text-red-100/60 text-[10px] font-semibold uppercase tracking-wider mt-0.5">Est. 1985 • Tokha Heritage</p>
+                  <p className="text-red-100/60 text-[10px] font-semibold uppercase tracking-wider mt-0.5">Est. 1985 • Sanepa, Kathmandu</p>
                 </div>
               </div>
               
@@ -113,7 +113,7 @@ const Footer = () => {
               <div className="space-y-4">
                 <h4 className="text-base font-bold tracking-tight border-b border-white/20 pb-1.5 inline-block">Support</h4>
                 <ul className="space-y-2.5 text-red-50 text-sm">
-                  <li className="flex gap-3 items-center"><MapPin className="shrink-0 w-4 h-4 text-red-300" /> <span>kalimati,KTM</span></li>
+                  <li className="flex gap-3 items-center"><MapPin className="shrink-0 w-4 h-4 text-red-300" /> <span>Sanepa, KTM</span></li>
                   <li className="flex gap-3 items-center"><Phone className="shrink-0 w-4 h-4 text-red-300" /> <span>01-00000000</span></li>
                   <li className="flex gap-3 items-center"><Mail className="shrink-0 w-4 h-4 text-red-300" /> <span>pure@sitaram.com</span></li>
                   <li className="flex gap-3 items-center"><Clock className="shrink-0 w-4 h-4 text-red-300" /> <span>6 AM - 8 PM</span></li>
@@ -145,7 +145,8 @@ const Footer = () => {
       {/* 3. Bottom Bar */}
       <div className="bg-white py-4 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-3 text-[10px] font-bold uppercase tracking-wider text-gray-400">
-          <p>© 2026 Sita Ram Dairy Heritage. All rights reserved.</p>
+          <p>© 2026 Sita Ram Dairy. All rights reserved.</p>
+          <p>© 2026 Designed and Developed by MotionAge.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-red-600 transition-colors">Privacy</a>
             <a href="#" className="hover:text-red-600 transition-colors">Terms</a>
