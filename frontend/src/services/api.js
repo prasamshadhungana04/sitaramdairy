@@ -1,13 +1,18 @@
-// frontend/src/services/api.js
 import axios from 'axios';
 
+// Dynamically set the API URL
+// On Vercel: Uses your VITE_API_BASE_URL (InfinityFree URL)
+// On Local: Falls back to '/api' for your Vite Proxy
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+
 const api = axios.create({
-  // Using the Vite Proxy setup to route directly to XAMPP without CORS issues
-  baseURL: '/api',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
+  // withCredentials must be true if you use PHP sessions, 
+  // but note that InfinityFree often blocks cross-site cookies.
   withCredentials: true,
 });
 
@@ -34,14 +39,12 @@ api.interceptors.response.use(
   (error) => {
     const originalRequest = error.config;
     
-    // FIXED: Only redirect if it's a 401 AND we are NOT trying to log in.
-    // If we are logging in, let the login page handle the error so it shows the red text!
+    // Redirect only if it's a 401 (Unauthorized) AND we are NOT on the login page
     if (error.response?.status === 401 && !originalRequest.url.includes('login.php')) {
       console.warn("Session expired. Redirecting to login...");
       localStorage.removeItem('sitaRamUser');
       localStorage.removeItem('sitaRamToken');
       
-      // Only force refresh if they aren't already on the login page
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';
       }
