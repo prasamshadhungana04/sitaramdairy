@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 // Global Layout Components
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
+import FloatingChat from './components/FloatingChat'; // <--- 1. Import your new Chat component
 
 // Public Facing Pages
 import HomePage from './pages/HomePage';
@@ -25,16 +26,15 @@ import RegisterPage from './pages/RegisterPage';
 
 // Admin Dashboard & Management (Nested Routes)
 import Dashboard from './admin/Dashboard';
-import Overview from './admin/Overview'; // New Overview Component
+import Overview from './admin/Overview'; 
 import ProductManagement from './admin/ProductManagement';
-import MilkStockManagement from './admin/MilkStockManagement'; // New Milk Stock Component
+import MilkStockManagement from './admin/MilkStockManagement'; 
 import OrderManagement from './admin/OrderManagement';
 import BannerManagement from './admin/BannerManagement';
-import UserManagement from './admin/UserManagement'; // New User Management Component
+import UserManagement from './admin/UserManagement'; 
 
 /**
  * ScrollToTop Utility Component
- * Forces the browser to the top of the page on every route change.
  */
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -48,15 +48,19 @@ const ScrollToTop = () => {
 
 /**
  * PublicLayout Wrapper
- * Ensures Header and Footer only appear on user-facing pages.
+ * Ensures Header, Footer, and Floating Chat only appear on user-facing pages.
  */
 const PublicLayout = ({ children }) => (
-  <div className="flex flex-col min-h-screen">
+  <div className="flex flex-col min-h-screen relative">
     <Header />
     <main className="flex-grow bg-[#FDF8E7]">
       {children}
     </main>
     <Footer />
+    
+    {/* === 2. ADDED FLOATING CHAT HERE === */}
+    {/* This will float over all public pages */}
+    <FloatingChat /> 
   </div>
 );
 
@@ -90,17 +94,17 @@ function App() {
         <Route path="/history" element={<PublicLayout><OrderHistoryPage /></PublicLayout>} />
 
         {/* === ADMIN PANEL (NESTED) === */}
+        {/* We use a separate layout/Dashboard here, so FloatingChat won't show up */}
         <Route path="/admin" element={<Dashboard />}>
-          {/* Index route for /admin shows the dynamic Overview stats */}
           <Route index element={<Overview />} /> 
           <Route path="products" element={<ProductManagement />} />
-          <Route path="milk" element={<MilkStockManagement />} /> {/* New Milk Stock Section */}
+          <Route path="milk" element={<MilkStockManagement />} />
           <Route path="orders" element={<OrderManagement />} />
           <Route path="banners" element={<BannerManagement />} />
-          <Route path="users" element={<UserManagement />} /> {/* Full User/Admin Control */}
+          <Route path="users" element={<UserManagement />} />
         </Route>
 
-        {/* === 404 NOT FOUND (Branded Red/Black) === */}
+        {/* === 404 NOT FOUND === */}
         <Route path="*" element={
           <PublicLayout>
             <div className="flex flex-col items-center justify-center py-40 text-center px-6">
