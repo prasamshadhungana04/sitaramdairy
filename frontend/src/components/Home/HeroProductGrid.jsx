@@ -64,7 +64,7 @@ const HeroProductGrid = () => {
             The Sita Ram Standard
           </h2>
           <h3 className="text-5xl md:text-6xl font-serif font-black text-[#1A1A1A] mb-8 tracking-tight">
-            Our Main <span className="text-[#7A0000]">Products</span>
+            Sitaram <span className="text-[#7A0000]">Produces</span>
           </h3>
           <div className="w-32 h-1.5 bg-[#7A0000] mx-auto rounded-full" />
         </motion.div>

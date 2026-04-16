@@ -1,7 +1,7 @@
 // frontend/src/components/Layout/Header.jsx
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; 
 import { ShoppingCart, User, PhoneCall, Menu, X, LogOut } from 'lucide-react'; 
 import ContactModal from '../ContactModal';
 import { useCart } from '../../context/CartContext';
@@ -13,10 +13,9 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
-  const navigate = useNavigate(); // ADDED: For smooth routing
+  const navigate = useNavigate();
   const location = useLocation();
 
-  // MODIFIED: Pull clearCart and logout directly from your new Contexts
   const { cartItems, clearCart } = useCart();
   const { user, isAuthenticated, logout } = useAuth(); 
   
@@ -32,32 +31,34 @@ const Header = () => {
     { id: 'notices', label: 'Farm Updates', path: '/notices' },
   ];
 
-  // MODIFIED: Uses Context to instantly update UI across the whole app
   const handleLogout = async () => {
-    await logout();      // Wipes user context and tokens instantly
-    if (clearCart) clearCart(); // Wipes cart context instantly
-    navigate('/login');  // Smooth transition to login page
+    await logout();
+    if (clearCart) clearCart();
+    navigate('/login');
   };
 
   return (
     <>
-      {/* 3D FROSTED GLASS HEADER */}
       <header className="bg-white/40 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] sticky top-0 z-40 border-b border-white/60">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 relative">
           <div className="flex justify-between items-center">
             
-            <Link to="/" className="flex items-center gap-3 group">
+            {/* === LOGO SECTION FIXED FOR MOBILE === */}
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 group shrink-0">
               <img 
                 src="/logo.png" 
                 alt="Sita Ram Organic Dairy Logo" 
-                className="w-14 h-14 object-contain group-hover:scale-105 transition-transform duration-300"
+                // Scaled down slightly on mobile (w-10), full size on tablet/desktop (sm:w-14)
+                className="w-10 h-10 sm:w-14 sm:h-14 object-contain group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="hidden sm:block">
-                <h1 className="text-xl font-serif font-bold text-dairyBlack leading-none">Sita Ram</h1>
-                <span className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em]">Organic Dairy</span>
+              {/* Removed 'hidden sm:block' so it always shows */}
+              <div className="flex flex-col justify-center">
+                <h1 className="text-base sm:text-xl font-serif font-bold text-dairyBlack leading-none">Sita Ram</h1>
+                <span className="text-[7px] sm:text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em] mt-0.5">Gokul Milk</span>
               </div>
             </Link>
 
+            {/* Desktop Nav */}
             <nav className="hidden lg:flex gap-8 items-center">
               {navItems.map((item) => (
                 <Link
@@ -83,25 +84,23 @@ const Header = () => {
               ))}
             </nav>
 
-            <div className="flex items-center gap-5">
+            {/* Right Side Icons */}
+            <div className="flex items-center gap-3 sm:gap-5">
               <button onClick={() => setIsContactOpen(true)} className="hidden sm:flex text-dairyBlack hover:text-dairyRed transition-colors">
                 <PhoneCall size={20} />
               </button>
 
-              {/* AUTHENTICATION ICONS */}
               {isAuthenticated ? (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 sm:gap-4">
                   <Link 
                     to={user?.role === 'admin' ? '/admin' : '/history'} 
                     className="text-dairyBlack hover:text-dairyRed transition-colors"
-                    title="Dashboard/Profile"
                   >
-                    <User size={22} />
+                    <User size={20} className="sm:w-[22px] sm:h-[22px]" />
                   </Link>
                   <button 
                     onClick={handleLogout} 
-                    className="text-dairyBlack hover:text-dairyRed transition-colors"
-                    title="Logout"
+                    className="hidden sm:block text-dairyBlack hover:text-dairyRed transition-colors"
                   >
                     <LogOut size={22} />
                   </button>
@@ -113,20 +112,70 @@ const Header = () => {
               )}
 
               <button onClick={() => setIsCartOpen(true)} className="relative text-dairyBlack hover:text-dairyRed transition-colors p-1">
-                <ShoppingCart size={24} />
+                <ShoppingCart size={22} className="sm:w-[24px] sm:h-[24px]" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-dairyRed text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-redGlow">
+                  <span className="absolute -top-1 -right-1 bg-dairyRed text-white text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-redGlow">
                     {cartCount}
                   </span>
                 )}
               </button>
 
-              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-dairyBlack">
-                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-dairyBlack z-50 p-1">
+                {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
               </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden"
+            >
+              <div className="flex flex-col px-6 py-4 gap-4">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`text-sm tracking-wider uppercase font-bold ${
+                      activeLink === item.id ? 'text-dairyRed' : 'text-gray-800'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                
+                {/* Mobile Login/Logout Link */}
+                <div className="pt-4 border-t border-gray-100 flex flex-col gap-4">
+                  {!isAuthenticated ? (
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-sm tracking-wider uppercase font-bold text-gray-800"
+                    >
+                      Login
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="text-sm tracking-wider uppercase font-bold text-red-600 text-left flex items-center gap-2"
+                    >
+                      <LogOut size={16} /> Logout
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
