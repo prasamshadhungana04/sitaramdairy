@@ -1,54 +1,71 @@
-// frontend/src/pages/ProductDetailPage.jsx
-import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import ProductDetail from '../components/Products/ProductDetail';
+import api from '../services/api';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
-  // Simulated DB fetch - Updated to match Sita Ram branding and hero_2.png
-  const product = {
-    id: parseInt(id),
-    name: "Sita Ram Premium Dairy",
-    description: "Experience the legacy of Tokha. Our premium dairy products are crafted using traditional methods, ensuring the highest level of purity, nutrition, and authentic Nepalese taste.",
-    price_npr: 450,
-    stock_quantity: 25,
-    // Updated to use hero_2.png
-    image: "/hero_2.png" 
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    const fetchSingleProduct = async () => {
+      try {
+        // Fetching all products and finding the specific one by ID
+        const res = await api.get('/products/index.php');
+        if (res.data.status === 'success') {
+          const foundProduct = res.data.data.find(p => p.id === parseInt(id));
+          if (foundProduct) {
+            setProduct(foundProduct);
+            setSelectedVariant(foundProduct.variants[0]); // Select first variant by default
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSingleProduct();
+  }, [id]);
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
-    navigate('/cart');
+    if (product && selectedVariant) {
+      const cartItem = {
+        ...product, 
+        cartItemId: `${product.id}-${selectedVariant.size}`, 
+        selectedSize: selectedVariant.size, 
+        price_npr: selectedVariant.price_npr, 
+        image: selectedVariant.image || product.image
+      };
+      addToCart(cartItem, quantity);
+      navigate('/cart');
+    }
   };
+
+  if (loading) return <div className="min-h-screen pt-32 flex justify-center"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-[#002147]"></div></div>;
+  if (!product) return <div className="min-h-screen pt-40 text-center text-2xl font-bold text-[#002147]">Product Not Found</div>;
 
   return (
     <div className="bg-[#F9F6F0] min-h-screen pt-32 pb-12 relative overflow-hidden">
-      {/* Background Decorative Glows */}
-      <div className="absolute top-20 right-20 w-[30rem] h-[30rem] bg-[#E2B254]/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-[25rem] h-[25rem] bg-dairyRed/5 rounded-full blur-[100px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        {/* Navigation Breadcrumb feel */}
-        <div className="mb-8 ml-2">
-          <button 
-            onClick={() => navigate('/products')}
-            className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-dairyRed transition-colors"
-          >
-            ← Back to Products
-          </button>
-        </div>
-
-        <div className="bg-white/40 backdrop-blur-md rounded-[3rem] p-4 shadow-premium border border-white/60">
+        <div className="bg-white/40 backdrop-blur-md rounded-[3rem] p-4 shadow-xl border border-white/60">
           <ProductDetail 
             product={product} 
+            selectedVariant={selectedVariant}
+            setSelectedVariant={setSelectedVariant}
             quantity={quantity} 
             setQuantity={setQuantity} 
-            handleAddToCart={handleAddToCart} 
+            handleAddToCart={handleAddToCart}
             onBack={() => navigate('/products')}
           />
         </div>

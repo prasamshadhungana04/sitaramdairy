@@ -23,9 +23,21 @@ const Header = () => {
   const activeLink = location.pathname === '/' ? 'home' : location.pathname.slice(1);
   const [hoveredItem, setHoveredItem] = useState(null);
 
+  // Added dropdown sub-items to the Products link
   const navItems = [
     { id: 'home', label: 'Home', path: '/' },
-    { id: 'products', label: 'Products', path: '/products' },
+    { 
+      id: 'products', 
+      label: 'Products', 
+      path: '/products',
+      dropdown: [
+        { label: 'All Products', path: '/products' },
+        { label: 'Ghee & Butter', path: '/products' },
+        { label: 'Curd & Paneer', path: '/products' },
+        { label: 'Ice Cream', path: '/products' },
+        { label: 'Beverages', path: '/products' }
+      ]
+    },
     { id: 'about', label: 'Our Story', path: '/about' },
     { id: 'services', label: 'Services', path: '/services' },
     { id: 'notices', label: 'Farm Updates', path: '/notices' },
@@ -48,10 +60,8 @@ const Header = () => {
               <img 
                 src="/logo.png" 
                 alt="Sita Ram Organic Dairy Logo" 
-                // Scaled down slightly on mobile (w-10), full size on tablet/desktop (sm:w-14)
                 className="w-10 h-10 sm:w-14 sm:h-14 object-contain group-hover:scale-105 transition-transform duration-300"
               />
-              {/* Removed 'hidden sm:block' so it always shows */}
               <div className="flex flex-col justify-center">
                 <h1 className="text-base sm:text-xl font-serif font-bold text-dairyBlack leading-none">Sita Ram</h1>
                 <span className="text-[7px] sm:text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em] mt-0.5">Gokul Milk</span>
@@ -61,26 +71,58 @@ const Header = () => {
             {/* Desktop Nav */}
             <nav className="hidden lg:flex gap-8 items-center">
               {navItems.map((item) => (
-                <Link
-                  key={item.id}
-                  to={item.path}
+                <div 
+                  key={item.id} 
+                  className="relative group py-2" // Wrapper to handle hover state for dropdown
                   onMouseEnter={() => setHoveredItem(item.id)}
                   onMouseLeave={() => setHoveredItem(null)}
-                  className={`text-sm tracking-wider uppercase transition-all duration-300 relative cursor-pointer ${
-                    activeLink === item.id 
-                      ? 'text-dairyBlack font-bold' 
-                      : 'text-gray-700 font-medium hover:text-dairyBlack hover:font-bold'
-                  }`}
                 >
-                  {item.label}
-                  
-                  {hoveredItem === item.id && activeLink !== item.id && (
-                    <motion.div layoutId="navHover" className="absolute -bottom-2 left-0 right-0 h-[2px] bg-dairyRed/50" />
+                  <Link
+                    to={item.path}
+                    className={`text-sm tracking-wider uppercase transition-all duration-300 relative cursor-pointer ${
+                      activeLink === item.id 
+                        ? 'text-dairyBlack font-bold' 
+                        : 'text-gray-700 font-medium hover:text-dairyBlack hover:font-bold'
+                    }`}
+                  >
+                    {item.label}
+                    
+                    {hoveredItem === item.id && activeLink !== item.id && (
+                      <motion.div layoutId="navHover" className="absolute -bottom-2 left-0 right-0 h-[2px] bg-dairyRed/50" />
+                    )}
+                    {activeLink === item.id && (
+                      <div className="absolute -bottom-2 left-0 right-0 h-[2px] bg-dairyRed shadow-[0_2px_8px_rgba(200,16,46,0.5)]" />
+                    )}
+                  </Link>
+
+                  {/* Desktop Dropdown Menu */}
+                  {item.dropdown && (
+                    <AnimatePresence>
+                      {hoveredItem === item.id && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                          // pt-4 creates an invisible bridge so the mouse doesn't fall off the hover area
+                          className="absolute top-full left-0 pt-4 w-48 z-50"
+                        >
+                          <div className="bg-white border border-gray-100 shadow-xl rounded-xl overflow-hidden flex flex-col">
+                            {item.dropdown.map((dropItem, idx) => (
+                              <Link
+                                key={idx}
+                                to={dropItem.path}
+                                className="px-5 py-3 text-xs uppercase tracking-wider font-bold text-gray-600 hover:text-dairyRed hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-none"
+                              >
+                                {dropItem.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   )}
-                  {activeLink === item.id && (
-                    <div className="absolute -bottom-2 left-0 right-0 h-[2px] bg-dairyRed shadow-[0_2px_8px_rgba(200,16,46,0.5)]" />
-                  )}
-                </Link>
+                </div>
               ))}
             </nav>
 
@@ -138,16 +180,33 @@ const Header = () => {
             >
               <div className="flex flex-col px-6 py-4 gap-4">
                 {navItems.map((item) => (
-                  <Link
-                    key={item.id}
-                    to={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`text-sm tracking-wider uppercase font-bold ${
-                      activeLink === item.id ? 'text-dairyRed' : 'text-gray-800'
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
+                  <div key={item.id} className="flex flex-col">
+                    <Link
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`text-sm tracking-wider uppercase font-bold ${
+                        activeLink === item.id ? 'text-dairyRed' : 'text-gray-800'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                    
+                    {/* Mobile Nested Dropdown Items */}
+                    {item.dropdown && (
+                      <div className="flex flex-col ml-4 mt-3 gap-3 border-l-2 border-gray-100 pl-4">
+                        {item.dropdown.map((dropItem, idx) => (
+                          <Link
+                            key={idx}
+                            to={dropItem.path}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-xs tracking-wider uppercase font-bold text-gray-500 hover:text-dairyRed"
+                          >
+                            {dropItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
                 
                 {/* Mobile Login/Logout Link */}

@@ -100,7 +100,7 @@ const HeroProductGrid = () => {
                   <span className="absolute top-6 left-6 bg-[#7A0000] text-white px-4 py-1.5 rounded-full shadow-lg text-[10px] font-black uppercase tracking-widest z-10">
                     {product.badge}
                   </span>
-                </div>
+                </div> 
                 
                 {/* Content Section */}
                 <div className="lg:w-3/5 p-8 lg:p-10 flex flex-col justify-center bg-white relative">

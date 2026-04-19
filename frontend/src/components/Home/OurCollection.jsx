@@ -1,95 +1,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useCart } from "../../context/CartContext"; // Import the cart context
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 
-const OurCollection = () => {
+const OurCollection = ({ products = [] }) => {
   const [hoveredId, setHoveredId] = useState(null);
-  const { addToCart } = useCart(); // Initialize cart function
-
-  // Note: Prices must be numbers so the Cart math works! 
-  // We separate the unit out to display it visually.
-  const collections = [
-    {
-      id: 1,
-      name: "ARTISANAL",
-      title: "Premium Ghee",
-      subtitle: "Traditional Bilona Style",
-      image: "/ghee.png",
-      price: 950,
-      unit: "/ L",
-      badge: "NATURAL ENERGY",
-    },
-    {
-      id: 2,
-      name: "HEALTHY",
-      title: "Processed Butter",
-      subtitle: "Creamy & Himalayan Fresh",
-      image: "/butter.png",
-      price: 250,
-      unit: "/ 200g",
-      badge: "BESTSELLER",
-    },
-    {
-      id: 3,
-      name: "PROBIOTIC",
-      title: "Sita Ram Dahi",
-      subtitle: "Pure Thick Yogurt",
-      image: "/dahi.png",
-      price: 120,
-      unit: "/ 500g",
-      badge: "SUGAR FREE",
-    },
-    {
-      id: 4,
-      name: "PROTEIN RICH",
-      title: "Fresh Paneer",
-      subtitle: "Soft & Vacuum Packed",
-      image: "/paneer.png",
-      price: 380,
-      unit: "/ 500g",
-      badge: "NEW",
-    },
-    {
-      id: 5,
-      name: "REFRESHING",
-      title: "Strawberry Lassi",
-      subtitle: "Real Fruit Fusion",
-      image: "/strawberrylassi.png",
-      price: 60,
-      unit: "/ 200ml",
-      badge: "FRUITY",
-    },
-    {
-      id: 6,
-      name: "ENERGY",
-      title: "Keshar Milk",
-      subtitle: "Saffron Infused Low Fat",
-      image: "/kesharmilk.png",
-      price: 80,
-      unit: "/ 200ml",
-      badge: "FRESH",
-    },
-    {
-      id: 7,
-      name: "TRADITIONAL",
-      title: "Sweet Lassi",
-      subtitle: "Calcium & Protein Source",
-      image: "/lassi.png",
-      price: 50,
-      unit: "/ 200ml",
-      badge: "CLASSIC",
-    },
-    {
-      id: 8,
-      name: "DAILY ESSENTIAL",
-      title: "Medium Dahi",
-      subtitle: "Pure Milk Curd",
-      image: "/medium_dahi.png",
-      price: 80,
-      unit: "/ 250g",
-      badge: "CREAMY",
-    },
-  ];
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -104,6 +21,9 @@ const OurCollection = () => {
       transition: { duration: 0.5, ease: "easeOut" },
     },
   };
+
+  // Don't render the section if there are no premium products checked in admin
+  if (products.length === 0) return null;
 
   return (
     <section className="py-24 bg-[#FDF8E7] relative overflow-hidden">
@@ -140,7 +60,7 @@ const OurCollection = () => {
           <div className="w-24 h-1 bg-[#9e111a] mx-auto rounded-full" />
         </motion.div>
 
-        {/* Cards */}
+        {/* Dynamic Cards */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -148,72 +68,90 @@ const OurCollection = () => {
           viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-          {collections.map((item) => (
-            <motion.div
-              key={item.id}
-              variants={itemVariants}
-              onMouseEnter={() => setHoveredId(item.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              className="group relative cursor-pointer"
-            >
-              <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-500 flex flex-col h-full z-10 relative">
-                
-                {/* Image */}
-                <div className="relative h-64 overflow-hidden bg-white">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
-                  />
+          {products.map((product) => {
+            // Dynamically extract data from DB format
+            const lowestPrice = product.variants?.length > 0 ? Math.min(...product.variants.map(v => parseFloat(v.price_npr) || 0)) : 0;
+            const displayImage = product.image || product.variants?.[0]?.image || '/logo.png';
+            const unit = product.variants?.[0]?.size ? ` / ${product.variants[0].size}` : '';
+            const subtitle = product.variants?.[0]?.description || "Farm Fresh Dairy";
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#9e111a]/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+            return (
+              <motion.div
+                key={product.id}
+                variants={itemVariants}
+                onMouseEnter={() => setHoveredId(product.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                onClick={() => navigate(`/products/${product.id}`)}
+                className="group relative cursor-pointer"
+              >
+                <div className="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-500 flex flex-col h-full z-10 relative">
+                  
+                  {/* Image */}
+                  <div className="relative h-64 overflow-hidden bg-white flex items-center justify-center">
+                    <img
+                      src={displayImage}
+                      alt={product.name}
+                      className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply"
+                    />
 
-                  <span className="absolute top-4 right-4 bg-[#9e111a] text-white px-3 py-1 text-[10px] font-black tracking-widest rounded uppercase shadow-md">
-                    {item.badge}
-                  </span>
-                </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#9e111a]/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
 
-                {/* Content */}
-                <div className="p-6 flex flex-col flex-grow text-center">
-                  <p className="text-[#9e111a] text-[10px] font-black uppercase mb-2 tracking-widest">
-                    {item.name}
-                  </p>
+                    {product.badge && (
+                      <span className="absolute top-4 right-4 bg-[#9e111a] text-white px-3 py-1 text-[10px] font-black tracking-widest rounded uppercase shadow-md">
+                        {product.badge}
+                      </span>
+                    )}
+                  </div>
 
-                  <h4 className="text-xl font-serif font-bold text-[#1A1A1A] mb-1">
-                    {item.title}
-                  </h4>
+                  {/* Content */}
+                  <div className="p-6 flex flex-col flex-grow text-center">
+                    <p className="text-[#9e111a] text-[10px] font-black uppercase mb-2 tracking-widest">
+                      {product.category}
+                    </p>
 
-                  <p className="text-gray-500 font-medium text-xs mb-4">
-                    {item.subtitle}
-                  </p>
+                    <h4 className="text-xl font-serif font-bold text-[#1A1A1A] mb-1 line-clamp-1">
+                      {product.name}
+                    </h4>
 
-                  <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
-                    <span className="text-lg font-black text-[#1A1A1A]">
-                      NPR {item.price}<span className="text-xs text-gray-400 font-bold ml-1">{item.unit}</span>
-                    </span>
+                    <p className="text-gray-500 font-medium text-xs mb-4 line-clamp-1">
+                      {subtitle}
+                    </p>
 
-                    {/* WIRED UP ADD TO CART BUTTON */}
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevents triggering any parent links/modals
-                        if(addToCart) addToCart(item); // Safely adds the item to context
-                      }}
-                      className="bg-[#9e111a] text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[#1A1A1A] transition-colors shadow-md hover:shadow-xl"
-                    >
-                      Add +
-                    </button>
+                    <div className="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+                      <span className="text-lg font-black text-[#1A1A1A]">
+                        NPR {lowestPrice}<span className="text-xs text-gray-400 font-bold ml-1">{unit}</span>
+                      </span>
+
+                      {/* WIRED UP ADD TO CART BUTTON */}
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation(); 
+                          const cartItem = {
+                            ...product,
+                            cartItemId: `${product.id}-${product.variants?.[0]?.size || 'default'}`,
+                            selectedSize: product.variants?.[0]?.size || 'Standard',
+                            price_npr: lowestPrice,
+                            image: displayImage
+                          };
+                          if(addToCart) addToCart(cartItem, 1);
+                        }}
+                        className="bg-[#9e111a] text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[#1A1A1A] transition-colors shadow-md hover:shadow-xl"
+                      >
+                        Add +
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Hover Glow */}
-              <div
-                className={`absolute -bottom-4 left-4 right-4 h-8 bg-[#9e111a]/20 rounded-full blur-xl transition-all duration-500 z-0 ${
-                  hoveredId === item.id ? "opacity-100 scale-100" : "opacity-0 scale-75"
-                }`}
-              />
-            </motion.div>
-          ))}
+                {/* Hover Glow */}
+                <div
+                  className={`absolute -bottom-4 left-4 right-4 h-8 bg-[#9e111a]/20 rounded-full blur-xl transition-all duration-500 z-0 ${
+                    hoveredId === product.id ? "opacity-100 scale-100" : "opacity-0 scale-75"
+                  }`}
+                />
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
