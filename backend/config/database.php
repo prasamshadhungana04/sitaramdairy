@@ -1,13 +1,17 @@
 <?php
+require_once 'cors.php';
+
 $host = "localhost";
-$dbname = "sita_ram_dairy";
 $username = "root";
-$password = ""; // Default XAMPP password is empty
+$password = ""; 
+$dbname = "sitaram_dairy";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die(json_encode(["error" => "Connection failed: " . $e->getMessage()]));
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    http_response_code(500);
+    die(json_encode(["error" => "Database Connection Failed: " . $e->getMessage()]));
 }
 ?>

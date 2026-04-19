@@ -1,18 +1,8 @@
-# 1. Enable CORS (Cross-Origin Resource Sharing)
-<IfModule mod_headers.c>
-    # Replace the URL below with your actual Vercel App URL
-    Header set Access-Control-Allow-Origin "https://sitaramdairy.vercel.app"
-    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, DELETE, PUT"
-    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
-    Header set Access-Control-Allow-Credentials "true"
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Handle CORS Preflight in Apache (Optional, as PHP handles it too)
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
 </IfModule>
-
-# 2. Handle Preflight OPTIONS requests
-# Browsers send an 'OPTIONS' request before a POST to check permissions.
-# This part ensures the server says "OK" (200) to those checks.
-RewriteEngine On
-RewriteCond %{REQUEST_METHOD} OPTIONS
-RewriteRule ^(.*)$ $1 [R=200,L]
-
-# 3. Prevent Directory Browsing (Security)
-Options -Indexes

@@ -20,20 +20,22 @@ if (!empty($data->email) && !empty($data->password)) {
             ],
             "token" => "admin-secure-token-999"
         ]);
-        exit; // Stop execution, login successful
+        exit; 
     }
 
     // ==========================================
     // STANDARD CUSTOMER LOGIN
     // ==========================================
     try {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        // Fetch using the new schema
+        $stmt = $pdo->prepare("SELECT id, name, email, role, password_hash FROM users WHERE email = ?");
         $stmt->execute([$data->email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // In production, use password_verify($data->password, $user['password'])
-        if ($user && $data->password === $user['password']) {
-            unset($user['password']); // Don't send password back
+        // Securely verify password
+        if ($user && password_verify($data->password, $user['password_hash'])) {
+            unset($user['password_hash']); // Don't send password hash to React
+            
             echo json_encode([
                 "success" => true,
                 "user" => $user,
